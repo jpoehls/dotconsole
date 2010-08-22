@@ -13,7 +13,7 @@ namespace DotConsole.Tests
         public void Parse_should_override_anonymous_arguments_with_named_arguments()
         {
             //  arrange
-            ArgumentSet args = ArgumentSet.Parse(new[] {"joshua", "2", "-connection", "david", "-v", "123"});
+            OldArgumentSet args = OldArgumentSet.Parse(new[] {"joshua", "2", "-connection", "david", "-v", "123"});
             var opts = new MockCommandArgs();
 
             //  act
@@ -28,7 +28,7 @@ namespace DotConsole.Tests
         public void Parse_should_set_property_values_by_position_of_anonymous_arguments()
         {
             //  arrange
-            ArgumentSet args = ArgumentSet.Parse(new[] {"joshua", "2"});
+            OldArgumentSet args = OldArgumentSet.Parse(new[] {"joshua", "2"});
             var opts = new MockCommandArgs();
 
             //  act
@@ -43,7 +43,7 @@ namespace DotConsole.Tests
         public void Parse_should_set_property_values_to_matching_named_arguments()
         {
             //  arrange
-            ArgumentSet args = ArgumentSet.Parse(new[] {"-connection", "joshua", "-v", "123"});
+            OldArgumentSet args = OldArgumentSet.Parse(new[] {"-connection", "joshua", "-v", "123"});
             var opts = new MockCommandArgs();
 
             //  act
@@ -58,7 +58,7 @@ namespace DotConsole.Tests
         public void Parse_should_validate_properties()
         {
             //  arrange
-            ArgumentSet args = ArgumentSet.Parse(new[] {"-v", "1"});
+            OldArgumentSet args = OldArgumentSet.Parse(new[] {"-v", "1"});
             var opts = new MockCommandArgs();
 
             //  act
@@ -72,7 +72,7 @@ namespace DotConsole.Tests
         public void Parse_should_validate_arguments_and_add_error_messages_to_collection()
         {
             //  arrange
-            ArgumentSet args = ArgumentSet.Parse(new[] {"-v", "0"});
+            OldArgumentSet args = OldArgumentSet.Parse(new[] {"-v", "0"});
             var opts = new MockCommandArgs();
 
             //  act

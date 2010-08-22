@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace DotConsole
 {
-    public class ArgumentSet
+    public class OldArgumentSet
     {
         /// <summary>
         /// Pipe delimited list of prefixes that
@@ -15,7 +15,7 @@ namespace DotConsole
         private readonly List<string> _anonymousArgs;
         private readonly Dictionary<string, string> _namedArgs;
 
-        private ArgumentSet()
+        private OldArgumentSet()
         {
             _namedArgs = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             _anonymousArgs = new List<string>();
@@ -53,12 +53,12 @@ namespace DotConsole
         /// Parses an array of arguments into
         /// collections of named and anonymous arguments.
         /// </summary>
-        public static ArgumentSet Parse(string[] args)
+        public static OldArgumentSet Parse(string[] args)
         {
             if (args == null)
                 throw new ArgumentNullException("args");
 
-            var set = new ArgumentSet();
+            var set = new OldArgumentSet();
 
             string name = null;
             for (int i = 0; i < args.Length; i++)

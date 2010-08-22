@@ -5,21 +5,21 @@ using System.Linq;
 namespace DotConsole.Tests.Mocks
 {
     [Export("Commands", typeof (ICommand))]
-    internal class MockCommand1 : CommandBase<MockCommandArgs>
+    internal class MockCommand1 : ICommand
     {
-        public override string CommandName
+        public string CommandName
         {
             get { return "TestCommand"; }
         }
 
-        public override string Description
+        public string Description
         {
             get { return "This is help text for MockCommand1."; }
         }
 
         public bool RunShouldThrowException { get; set; }
 
-        protected override void Run(MockCommandArgs args)
+        public void Run()
         {
             if (RunShouldThrowException)
             {

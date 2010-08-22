@@ -27,7 +27,7 @@ namespace DotConsole
             get { return _errors.Count() == 0; }
         }
 
-        public void Parse(ArgumentSet args)
+        public void Parse(OldArgumentSet args)
         {
             Dictionary<PropertyInfo, ArgumentAttribute> props = GetArgumentProperties(GetType());
 

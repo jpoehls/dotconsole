@@ -60,10 +60,13 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ArgumentBasedRouterTests.cs" />
+    <Compile Include="ConventionBasedArgumentParserTests.cs" />
+    <Compile Include="Mocks\EmptyMockCommand.cs" />
+    <Compile Include="StaticRouterTests.cs" />
     <Compile Include="_Old\ArgumentAttributeUnitTests.cs" />
     <Compile Include="_Old\ArgumentSetUnitTests.cs" />
     <Compile Include="_Old\CommandArgumentsUnitTests.cs" />
-    <Compile Include="_Old\CommandBaseUnitTests.cs" />
     <Compile Include="_Old\CommandHelpWriterUnitTests.cs" />
     <Compile Include="_Old\Mocks\MockCommand1.cs" />
     <Compile Include="_Old\Mocks\MockCommandArgs.cs" />

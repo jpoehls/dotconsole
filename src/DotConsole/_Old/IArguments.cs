@@ -8,6 +8,6 @@ namespace DotConsole
     {
         bool IsValid { get; }
         IEnumerable<string> Errors { get; }
-        void Parse(ArgumentSet argumentSet);
+        void Parse(OldArgumentSet argumentSet);
     }
 }

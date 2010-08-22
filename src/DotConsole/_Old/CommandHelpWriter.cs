@@ -121,11 +121,11 @@ namespace DotConsole
             _log.Write(command.CommandName);
             _log.Write(" ");
 
-            Type argType = command.GetArgumentsType();
-            WriteArgumentSyntax(argType);
+            //Type argType = command.GetArgumentsType();
+            //WriteArgumentSyntax(argType);
 
             _log.WriteLine(string.Empty);
-            WriteArgumentList(argType);
+            //WriteArgumentList(argType);
         }
 
         /// <summary>

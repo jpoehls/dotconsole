@@ -12,9 +12,9 @@ namespace DotConsole.Tests
         {
             //  arrange
             var args = new[] {"-HELP", "migrate"};
-            ArgumentSet set = ArgumentSet.Parse(args);
+            OldArgumentSet set = OldArgumentSet.Parse(args);
 
-            //  act
+            //  actC:\code\dotconsole\src\DotConsole.Tests\_Old\ArgumentSetUnitTests.cs
             bool exists = set.ContainsName("help");
 
             //  assert
@@ -26,7 +26,7 @@ namespace DotConsole.Tests
         {
             //  arrange
             var args = new[] {"-help", "migrate"};
-            ArgumentSet set = ArgumentSet.Parse(args);
+            OldArgumentSet set = OldArgumentSet.Parse(args);
 
             //  act
             bool exists = set.ContainsName("help");
@@ -40,7 +40,7 @@ namespace DotConsole.Tests
         {
             //  arrange
             var args = new[] {"-help", "migrate"};
-            ArgumentSet set = ArgumentSet.Parse(args);
+            OldArgumentSet set = OldArgumentSet.Parse(args);
 
             //  act
             string value = set.GetByName("help");
@@ -55,7 +55,7 @@ namespace DotConsole.Tests
         {
             //  arrange
             var args = new[] {"blah"};
-            ArgumentSet set = ArgumentSet.Parse(args);
+            OldArgumentSet set = OldArgumentSet.Parse(args);
 
             //  act, assert
             Assert.Throws<KeyNotFoundException>(() => set.GetByName("help"));
@@ -68,7 +68,7 @@ namespace DotConsole.Tests
             var args = new[] {"-help", "migrate", "joshua", "david", "-c", "connection"};
 
             //  act
-            ArgumentSet set = ArgumentSet.Parse(args);
+            OldArgumentSet set = OldArgumentSet.Parse(args);
 
             //  assert
             Assert.Equal(2, set.NamedArgs.Count());
@@ -84,7 +84,7 @@ namespace DotConsole.Tests
             var args = new[] {"-help", "-me"};
 
             //  act
-            ArgumentSet set = ArgumentSet.Parse(args);
+            OldArgumentSet set = OldArgumentSet.Parse(args);
 
             //  assert
             Assert.Equal(2, set.NamedArgs.Count());
@@ -99,7 +99,7 @@ namespace DotConsole.Tests
             var args = new[] {"-help", "migrate"};
 
             //  act
-            ArgumentSet set = ArgumentSet.Parse(args);
+            OldArgumentSet set = OldArgumentSet.Parse(args);
 
             //  assert
             Assert.True(set.ContainsName("help"));
@@ -112,7 +112,7 @@ namespace DotConsole.Tests
             var args = new[] {"/help", "migrate"};
 
             //  act
-            ArgumentSet set = ArgumentSet.Parse(args);
+            OldArgumentSet set = OldArgumentSet.Parse(args);
 
             //  assert
             Assert.True(set.ContainsName("help"));
@@ -125,7 +125,7 @@ namespace DotConsole.Tests
             var args = new[] {"-help", "migrate", "-c", "connection"};
 
             //  act
-            ArgumentSet set = ArgumentSet.Parse(args);
+            OldArgumentSet set = OldArgumentSet.Parse(args);
 
             //  assert
             Assert.Equal(2, set.NamedArgs.Count());
@@ -137,7 +137,7 @@ namespace DotConsole.Tests
         public void Parse_should_throw_ArgumentNullException_if_args_param_is_null()
         {
             //  act, assert
-            Assert.Throws<ArgumentNullException>(() => ArgumentSet.Parse(null));
+            Assert.Throws<ArgumentNullException>(() => OldArgumentSet.Parse(null));
         }
     }
 }

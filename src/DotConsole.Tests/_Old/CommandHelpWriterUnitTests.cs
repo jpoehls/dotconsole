@@ -117,7 +117,7 @@ namespace DotConsole.Tests
             using (var logger = new MockLog1())
             {
                 var writer = new CommandHelpWriter(logger);
-                writer.WriteArgumentSyntax(command.GetArgumentsType());
+                //writer.WriteArgumentSyntax(command.GetArgumentsType());
                 return logger.Output;
             }
         }
@@ -127,7 +127,7 @@ namespace DotConsole.Tests
             using (var logger = new MockLog1())
             {
                 var writer = new CommandHelpWriter(logger);
-                writer.WriteArgumentList(command.GetArgumentsType());
+                //writer.WriteArgumentList(command.GetArgumentsType());
                 return logger.Output;
             }
         }

@@ -4,7 +4,7 @@
     {
         static Commander()
         {
-            ArgumentParser = ArgumentParser.UniversalSyntax;
+            ArgumentParser = new ConventionBasedArgumentParser(ArgumentConventions.WindowsConventions);
             CommandRouter = Router.ArgumentBasedRouter;
         }
 
@@ -16,7 +16,7 @@
         /// <summary>
         /// Gets or sets the argument parser that should be used.
         /// </summary>
-        public static ArgumentParser ArgumentParser { get; set; }
+        public static IArgumentParser ArgumentParser { get; set; }
 
         /// <summary>
         /// This will parse the command line arguments,
