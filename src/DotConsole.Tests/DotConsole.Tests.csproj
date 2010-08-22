@@ -31,12 +31,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Moq">
+      <HintPath>..\..\lib\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition, Version=2009.22.10.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="xunit">
+      <HintPath>..\..\tools\xunit\xunit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotConsole\DotConsole.csproj">
@@ -48,6 +56,14 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ArgumentAttributeUnitTests.cs" />
+    <Compile Include="ArgumentSetUnitTests.cs" />
+    <Compile Include="CommandArgumentsUnitTests.cs" />
+    <Compile Include="CommandBaseUnitTests.cs" />
+    <Compile Include="CommandHelpWriterUnitTests.cs" />
+    <Compile Include="Mocks\MockCommand1.cs" />
+    <Compile Include="Mocks\MockCommandArgs.cs" />
+    <Compile Include="Mocks\MockLog1.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

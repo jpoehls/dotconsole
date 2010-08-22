@@ -32,6 +32,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition">
+      <HintPath>..\..\lib\System.ComponentModel.Composition.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -42,6 +46,20 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ArgumentAttribute.cs" />
+    <Compile Include="ArgumentSet.cs" />
+    <Compile Include="CommandArguments.cs" />
+    <Compile Include="CommandBase.cs" />
+    <Compile Include="CommandEventArgs.cs" />
+    <Compile Include="CommandHelpWriter.cs" />
+    <Compile Include="IArguments.cs" />
+    <Compile Include="ICommand.cs" />
+    <Compile Include="IEnumerableExtensions.cs" />
+    <Compile Include="ILogger.cs" />
+    <Compile Include="LoggerBase.cs" />
+    <Compile Include="Repositories\CommandRepository.cs" />
+    <Compile Include="Repositories\LogRepository.cs" />
+    <Compile Include="ValueSetValidatorAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
