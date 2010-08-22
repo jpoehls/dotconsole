@@ -20,6 +20,7 @@ namespace DotConsole
          * dictionary options are supported like ( --file:key=value )
          *                                  or   ( -f:key=value )
          */
+        //http://docs.python.org/library/optparse.html
         public override TArgs Parse<TArgs>(IEnumerable<string> args)
         {
             var t = new TArgs();
