@@ -47,21 +47,30 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="ArgumentAttribute.cs" />
-    <Compile Include="ArgumentSet.cs" />
-    <Compile Include="CommandArguments.cs" />
-    <Compile Include="CommandBase.cs" />
+    <Compile Include="ArgumentBasedRouter.cs" />
+    <Compile Include="GnuPosixSyntaxParser.cs" />
+    <Compile Include="ArgumentParser.cs" />
+    <Compile Include="IRouter.cs" />
+    <Compile Include="Router.cs" />
+    <Compile Include="StaticRouter.cs" />
+    <Compile Include="UniversalSyntaxParser.cs" />
+    <Compile Include="WindowsSyntaxParser.cs" />
+    <Compile Include="_Old\ArgumentAttribute.cs" />
+    <Compile Include="_Old\ArgumentSet.cs" />
+    <Compile Include="_Old\CommandArguments.cs" />
+    <Compile Include="_Old\CommandBase.cs" />
     <Compile Include="Commander.cs" />
-    <Compile Include="CommandEventArgs.cs" />
-    <Compile Include="CommandHelpWriter.cs" />
-    <Compile Include="IArguments.cs" />
+    <Compile Include="_Old\CommandEventArgs.cs" />
+    <Compile Include="_Old\CommandHelpWriter.cs" />
+    <Compile Include="_Old\IArguments.cs" />
     <Compile Include="ICommand.cs" />
-    <Compile Include="IEnumerableExtensions.cs" />
-    <Compile Include="ILogger.cs" />
-    <Compile Include="LoggerBase.cs" />
-    <Compile Include="Repositories\CommandRepository.cs" />
-    <Compile Include="Repositories\LogRepository.cs" />
-    <Compile Include="ValueSetValidatorAttribute.cs" />
+    <Compile Include="ICommandArguments.cs" />
+    <Compile Include="_Old\IEnumerableExtensions.cs" />
+    <Compile Include="_Old\ILogger.cs" />
+    <Compile Include="_Old\LoggerBase.cs" />
+    <Compile Include="_Old\Repositories\CommandRepository.cs" />
+    <Compile Include="_Old\Repositories\LogRepository.cs" />
+    <Compile Include="_Old\ValueSetValidatorAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

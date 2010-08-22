@@ -3,25 +3,23 @@ using System.Linq;
 
 namespace DotConsole.Sample
 {
-    internal class SampleCommand : CommandBase<SampleCommandArgs>
+    public class SampleCommand : ICommand
     {
-        /// <summary>
-        /// The name of the command that is typed as a command line argument.
-        /// </summary>
-        public override string CommandName
+        public string CommandName
         {
             get { return "sample"; }
         }
 
-        /// <summary>
-        /// The help text information for the command.
-        /// </summary>
-        public override string Description
+        public string Description
         {
             get { return "Does something."; }
         }
 
-        protected override void Run(SampleCommandArgs args)
+        //  DotConsole will recognize this and assign
+        //  this property value with the correct args
+        public SampleCommandArgs Arguments { get; set; }
+
+        public void Run()
         {
             //  do something
         }

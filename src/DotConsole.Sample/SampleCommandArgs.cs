@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace DotConsole.Sample
 {
-    internal class SampleCommandArgs : CommandArguments
+    public class SampleCommandArgs : ICommandArguments
     {
         [Required(ErrorMessage = "-name is required")]
         [Argument("name", "n", "Name of the person running the sample.",

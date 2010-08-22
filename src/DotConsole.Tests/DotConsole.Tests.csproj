@@ -60,14 +60,14 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="ArgumentAttributeUnitTests.cs" />
-    <Compile Include="ArgumentSetUnitTests.cs" />
-    <Compile Include="CommandArgumentsUnitTests.cs" />
-    <Compile Include="CommandBaseUnitTests.cs" />
-    <Compile Include="CommandHelpWriterUnitTests.cs" />
-    <Compile Include="Mocks\MockCommand1.cs" />
-    <Compile Include="Mocks\MockCommandArgs.cs" />
-    <Compile Include="Mocks\MockLog1.cs" />
+    <Compile Include="_Old\ArgumentAttributeUnitTests.cs" />
+    <Compile Include="_Old\ArgumentSetUnitTests.cs" />
+    <Compile Include="_Old\CommandArgumentsUnitTests.cs" />
+    <Compile Include="_Old\CommandBaseUnitTests.cs" />
+    <Compile Include="_Old\CommandHelpWriterUnitTests.cs" />
+    <Compile Include="_Old\Mocks\MockCommand1.cs" />
+    <Compile Include="_Old\Mocks\MockCommandArgs.cs" />
+    <Compile Include="_Old\Mocks\MockLog1.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
