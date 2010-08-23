@@ -57,5 +57,20 @@ namespace DotConsole
         }
 
         #endregion
+
+        public bool IsNamed(string arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetName(string arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IArgumentValue GetValue(string arg)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

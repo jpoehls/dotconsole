@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
 
 namespace DotConsole
 {
     public interface IArgumentConventions
     {
-        IEnumerable<string> FlagPrefixes { get; }
-        IEnumerable<string> OptionPrefixes { get; }
-        IEnumerable<string> ValueSeparators { get; }
-        IEnumerable<string> KeySeparators { get; }
-        IEnumerable<string> ValueDelimiters { get; }
+        bool IsNamed(string arg);
+        string GetName(string arg);
+        IArgumentValue GetValue(string arg);
     }
 }

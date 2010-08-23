@@ -9,19 +9,13 @@ namespace DotConsole
     /// </summary>
     public class GnuPosixConventions : IArgumentConventions
     {
-        private readonly string[] _flagPrefixes;
-        private readonly string[] _keySeparators;
-        private readonly string[] _optionPrefixes;
-        private readonly string[] _valueDelimiters;
-        private readonly string[] _valueSeparators;
-
         public GnuPosixConventions()
         {
-            _flagPrefixes = new[] {"-"};
-            _optionPrefixes = new[] {"--"};
-            _valueSeparators = new[] {"="};
-            _keySeparators = new[] {":"};
-            _valueDelimiters = new[] {",", " "};
+//            _flagPrefixes = new[] { "-" };
+//            _optionPrefixes = new[] { "--" };
+//            _valueSeparators = new[] { "=" };
+//            _keySeparators = new[] { ":" };
+//            _valueDelimiters = new[] { ",", " " };
         }
 
         /*
@@ -45,29 +39,35 @@ namespace DotConsole
 
         #region IArgumentConventions Members
 
-        public IEnumerable<string> FlagPrefixes
+        public bool IsNamed(string arg)
         {
-            get { return _flagPrefixes; }
+            if (arg.StartsWith("-") && arg.Length > 1)
+            {
+                return true;
+            }
+            if (arg.StartsWith("--") && arg.Length > 2)
+            {
+                return true;
+            }
+            return false;
         }
 
-        public IEnumerable<string> OptionPrefixes
+        public string GetName(string arg)
         {
-            get { return _optionPrefixes; }
+            if (arg.StartsWith("-") && arg.Length > 1)
+            {
+                return arg.Substring(1);
+            }
+            if (arg.StartsWith("--") && arg.Length > 2)
+            {
+                return arg.Substring(2);
+            }
+            return null;
         }
 
-        public IEnumerable<string> ValueSeparators
+        public IArgumentValue GetValue(string arg)
         {
-            get { return _valueSeparators; }
-        }
-
-        public IEnumerable<string> KeySeparators
-        {
-            get { return _keySeparators; }
-        }
-
-        public IEnumerable<string> ValueDelimiters
-        {
-            get { return _valueDelimiters; }
+            throw new NotImplementedException();
         }
 
         #endregion

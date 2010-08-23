@@ -26,118 +26,25 @@ namespace DotConsole
 
             var set = new ArgumentSet();
 
-            string name = null;
-            int i = 0;
-            while (i < args.Length)
+            int idx = 0;
+            while (idx < args.Length)
             {
-                if (IsFlag(args[i]))
+                if (_conventions.IsNamed(args[idx]))
                 {
-                    set.Flags.AddRange(GetFlags(args[i]));
+                    var name = _conventions.GetName(args[idx]);
+                    var value = _conventions.GetValue(args[idx]);
+                    set.NamedArguments.Add(name, value);
                 }
-
-                if (HasValue(args, i))
+                else
                 {
-                    //ParseValues(args, i, set);
+                    set.PositionalArguments.Add(args[idx]);
                 }
-
-
-                bool isName = IsName(args[i]);
-                bool added = false;
-                if (name != null && !isName)
-                {
-                    //set._namedArgs.Add(name, args[i]);
-                    added = true;
-                }
-                else if (name != null)
-                {
-                    //set._namedArgs.Add(name, null);
-                    added = true;
-                }
-
-                if (added)
-                {
-                    name = null;
-                }
-
-                if (isName)
-                {
-                    name = GetName(args[i]);
-                }
-                else if (!added)
-                {
-                    //set._anonymousArgs.Add(args[i]);
-                }
-            }
-
-            if (name != null)
-            {
-                //set._namedArgs.Add(name, null);
+                idx++;
             }
 
             return set;
         }
 
-        private bool HasValue(string[] args, int i)
-        {
-            throw new NotImplementedException();
-        }
-
-        private IEnumerable<char> GetFlags(string arg)
-        {
-            foreach (var prefix in _conventions.FlagPrefixes)
-            {
-                if (arg.StartsWith(prefix) && arg.Length > prefix.Length)
-                {
-                    return arg.Substring(prefix.Length);
-                }
-            }
-
-            return null;
-        }
-
-        private bool IsFlag(string arg)
-        {
-            if (_conventions.FlagPrefixes.Any(prefix => arg.StartsWith(prefix) && arg.Length > prefix.Length))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
         #endregion
-
-        /// <summary>
-        /// Returns True/False whether the given
-        /// argument is a name or not.
-        /// </summary>
-        private static bool IsName(string arg)
-        {
-            //            foreach (string prefix in NamePrefixes.Split('|'))
-            //            {
-            //                if (arg.StartsWith(prefix) && arg.Length > prefix.Length)
-            //                {
-            //                    return true;
-            //                }
-            //            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Returns the name without the prefix.
-        /// </summary>
-        private static string GetName(string arg)
-        {
-            //            foreach (string prefix in NamePrefixes.Split('|'))
-            //            {
-            //                if (arg.StartsWith(prefix) && arg.Length > prefix.Length)
-            //                {
-            //                    return arg.Substring(prefix.Length);
-            //                }
-            //            }
-
-            return null;
-        }
     }
 }

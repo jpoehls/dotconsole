@@ -5,9 +5,7 @@ using System.Linq;
 namespace DotConsole
 {
     /// <summary>
-    /// Expects the command name to be the first argument.
-    /// Filters out the first argument so it is excluded
-    /// from the argument parsing later on.
+    /// Expects the command name to be the first positional argument.
     /// </summary>
     public class ArgumentBasedRouter : IRouter
     {
@@ -24,14 +22,9 @@ namespace DotConsole
         /// </summary>
         public Type DefaultCommand { get; set; }
 
-        public ICommand GetCommand(IEnumerable<string> args)
+        public ICommand GetCommand(ArgumentSet args)
         {
             throw new NotImplementedException();
-        }
-
-        public IEnumerable<string> FilterArguments(IEnumerable<string> args)
-        {
-            return args.Skip(1);
         }
     }
 }

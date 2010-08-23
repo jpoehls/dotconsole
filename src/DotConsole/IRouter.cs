@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
 
 namespace DotConsole
 {
     public interface IRouter
     {
-        ICommand GetCommand(IEnumerable<string> args);
-        IEnumerable<string> FilterArguments(IEnumerable<string> args);
+        ICommand GetCommand(ArgumentSet args);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
 
 namespace DotConsole
 {
@@ -8,14 +9,13 @@ namespace DotConsole
     public class StaticRouter<TCommand> : IRouter
         where TCommand : ICommand, new()
     {
-        public ICommand GetCommand(IEnumerable<string> args)
+        #region IRouter Members
+
+        public ICommand GetCommand(ArgumentSet args)
         {
             return new TCommand();
         }
 
-        public IEnumerable<string> FilterArguments(IEnumerable<string> args)
-        {
-            return args;
-        }
+        #endregion
     }
 }

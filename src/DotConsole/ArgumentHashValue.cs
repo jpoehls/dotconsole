@@ -2,9 +2,9 @@
 
 namespace DotConsole
 {
-    public class HashValueArgument : IArgumentValue
+    public class ArgumentHashValue : IArgumentValue
     {
-        public HashValueArgument()
+        public ArgumentHashValue()
         {
             Values = new Dictionary<string, string>();
         }

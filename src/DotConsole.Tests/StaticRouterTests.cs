@@ -20,19 +20,5 @@ namespace DotConsole.Tests
             //  assert
             Assert.IsType(typeof (EmptyMockCommand), cmd);
         }
-
-        [Fact]
-        public void FilterArguments_should_return_not_modify_arguments()
-        {
-            //  arrange
-            var router = new StaticRouter<EmptyMockCommand>();
-            IEnumerable<string> originalArgs = Enumerable.Empty<string>();
-
-            //  act
-            IEnumerable<string> filteredArgs = router.FilterArguments(originalArgs);
-
-            //  assert
-            Assert.Same(originalArgs, filteredArgs);
-        }
     }
 }

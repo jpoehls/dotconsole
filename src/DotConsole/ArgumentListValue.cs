@@ -2,9 +2,9 @@
 
 namespace DotConsole
 {
-    public class ListValueArgument : IArgumentValue
+    public class ArgumentListValue : IArgumentValue
     {
-        public ListValueArgument()
+        public ArgumentListValue()
         {
             Values = new List<string>();
         }
