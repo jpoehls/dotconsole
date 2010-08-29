@@ -13,7 +13,7 @@ namespace DotConsole.Tests
             _parser = new ConventionBasedArgumentParser(ArgumentConventions.GnuPosixConventions);
         }
 
-        //  commandName -abcd --file out.txt --include 1,2,3 4
+        //  commandName -abcd --file out.txt --include 1,2,3 4 -e -f -g
 
         [Fact]
         public void Parse_should_get_flags_pushed_together()
