@@ -3,18 +3,27 @@ using System.Linq;
 
 namespace DotConsole
 {
+    public class NamedArgumentsAttribute : Attribute
+    {
+        
+    }
+
+    public class AnonymousArgumentsAttribute : Attribute
+    {
+        
+    }
+
     public class ArgumentAttribute : Attribute
     {
-        public ArgumentAttribute(string name, string shortName, string description)
+        public ArgumentAttribute(string name, string shortName, string desc)
         {
             Name = name;
             ShortName = shortName;
-            Description = description;
-            Position = int.MaxValue;
+            Position = -1;
         }
 
         /// <summary>
-        /// Verbose name that is more intuitive for scripting and help text.
+        /// Long argument name.
         /// </summary>
         public string Name { get; set; }
 
@@ -30,13 +39,10 @@ namespace DotConsole
 
         /// <summary>
         /// If the argument is not passed in with a name then it will
-        /// be matched based on its position in the argument array.
+        /// be matched based on its position in the array of unnamed arguments.
         /// </summary>
         public int Position { get; set; }
 
-        /// <summary>
-        /// Description of this argument to show in the help text.
-        /// </summary>
         public string Description { get; set; }
     }
 }

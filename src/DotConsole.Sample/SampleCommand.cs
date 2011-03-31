@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace DotConsole.Sample
 {
-    public class SampleCommand : ICommand
+    public class SampleCommand : ICommand   
     {
         public string CommandName
         {

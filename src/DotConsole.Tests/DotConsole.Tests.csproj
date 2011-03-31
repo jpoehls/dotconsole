@@ -63,6 +63,7 @@
     <Compile Include="ArgumentBasedRouterTests.cs" />
     <Compile Include="ConventionBasedArgumentParserTests.cs" />
     <Compile Include="Mocks\EmptyMockCommand.cs" />
+    <Compile Include="RegexArgParser.cs" />
     <Compile Include="StaticRouterTests.cs" />
     <Compile Include="_Old\ArgumentAttributeUnitTests.cs" />
     <Compile Include="_Old\ArgumentSetUnitTests.cs" />
