@@ -7,6 +7,10 @@ namespace DotConsole.Sample
     {
         private static void Main(string[] args)
         {
+            // you have to tell the arg parser what you expect
+            // you can do that thru a fluent api
+
+
             //  todo: optionally, set a default implicit command
             //        this will be used if no command is specified in the args
             //Commander.DefaultCommand = XYZ;

@@ -33,6 +33,35 @@ namespace DotConsole.Tests
     //  or colons between option name and its value (ex. ping -w:100 -k:host_list)
     //  dictionary options are supported like ( /optionname:key=value )
 
+    // test cases:
+    /*
+-f foo
+--file foo
+-ffoo
+--file=foo
+
+<yourscript> -f outfile --quiet
+<yourscript> --quiet --file outfile
+<yourscript> -q -foutfile
+<yourscript> -qfoutfile
+     */
+
+    // sample help output
+    /*
+    Usage: <yourscript> [options]
+
+    Options:
+      -h, --help            show this help message and exit
+      -f FILE, --file=FILE  write report to FILE
+     */
+
+    /*
+prog -v --report /tmp/report.txt foo bar
+     * -v and --report are both options.
+     * Assuming that --report takes one argument,
+     * /tmp/report.txt is an option argument.
+     * foo and bar are positional arguments.
+*/
 
     public class RegexArgParserTests
     {
@@ -58,8 +87,46 @@ namespace DotConsole.Tests
             Console.WriteLine(set);
 
             Assert.True(set.ContainsName("file"), "file arg not found");
-            Assert.True(set.GetByName("file").Values.First() == "outfile", "file arg missing value");
+            Assert.True(set.GetByName("file").Values.FirstOrDefault() == "outfile", "file arg missing value");
             Assert.True(set.ContainsName("q"), "q arg not found");
+        }
+
+        [Fact]
+        public void TestCasePing1()
+        {
+            var args = new[]
+                           {
+                               "ping.exe",
+                               "-w",
+                               "100",
+                               "-k",
+                               "host_list"
+                           };
+
+            var parsed = RegexArgParser.ParseToSet(args);
+
+            Assert.True(parsed.ContainsName("w"), "missing 'w'");
+            Assert.True(parsed.GetByName("w").Values.FirstOrDefault() == "100", "w's value is missing");
+            Assert.True(parsed.ContainsName("k"), "missing 'k'");
+            Assert.True(parsed.GetByName("k").Values.FirstOrDefault() == "host_list", "k's value is missing");
+        }
+
+        [Fact]
+        public void TestCasePing2()
+        {
+            var args = new[]
+                           {
+                               "ping.exe",
+                               "-w:100",
+                               "-k:host_list"
+                           };
+
+            var parsed = RegexArgParser.ParseToSet(args);
+
+            Assert.True(parsed.ContainsName("w"), "missing 'w'");
+            Assert.True(parsed.GetByName("w").Values.FirstOrDefault() == "100", "w's value is missing");
+            Assert.True(parsed.ContainsName("k"), "missing 'k'");
+            Assert.True(parsed.GetByName("k").Values.FirstOrDefault() == "host_list", "k's value is missing");
         }
 
         [Fact]
@@ -76,7 +143,7 @@ namespace DotConsole.Tests
             var parsed = RegexArgParser.ParseToSet(args);
 
             Assert.True(parsed.ContainsName("f"), "missing 'f'");
-            Assert.True(parsed.GetByName("f").Values.First() == "outfile", "f's value is missing");
+            Assert.True(parsed.GetByName("f").Values.FirstOrDefault() == "outfile", "f's value is missing");
             Assert.True(parsed.ContainsName("quiet"), "missing 'quiet'");
         }
 
@@ -94,7 +161,7 @@ namespace DotConsole.Tests
             var parsed = RegexArgParser.ParseToSet(args);
 
             Assert.True(parsed.ContainsName("file"), "missing 'file'");
-            Assert.True(parsed.GetByName("file").Values.First() == "outfile", "file's value is missing");
+            Assert.True(parsed.GetByName("file").Values.FirstOrDefault() == "outfile", "file's value is missing");
             Assert.True(parsed.ContainsName("quiet"), "missing 'quiet'");
         }
 
@@ -111,7 +178,7 @@ namespace DotConsole.Tests
             var parsed = RegexArgParser.ParseToSet(args);
 
             Assert.True(parsed.ContainsName("f"), "missing 'f'");
-            Assert.True(parsed.GetByName("f").Values.First() == "outfile", "f's value is missing");
+            Assert.True(parsed.GetByName("f").Values.FirstOrDefault() == "outfile", "f's value is missing");
             Assert.True(parsed.ContainsName("q"), "missing 'q'");
         }
 
@@ -151,7 +218,8 @@ namespace DotConsole.Tests
 
     public class ArgSet
     {
-        public ArgSet(string executableName, IEnumerable<RegexArgParser.Arg> namedArgs, IEnumerable<string> positionalArgs)
+        public ArgSet(string executableName, IEnumerable<RegexArgParser.Arg> namedArgs,
+                      IEnumerable<string> positionalArgs)
         {
             ExecutableName = executableName;
             NamedArgs = namedArgs;
@@ -205,6 +273,65 @@ namespace DotConsole.Tests
             public string Name { get; set; }
             public IEnumerable<string> Values { get; set; }
             public IEnumerable<KeyValuePair<string, string>> KeyedValues { get; set; }
+        }
+
+        public class ParseHints
+        {
+            // flags are single char args starting with - or /
+            // that do not take a value
+            // they result in true/false basd on whether they are
+            // found in the args array or not
+            public char[] Flags { get; set; }
+
+            // same as flags except starting with a -- or /
+            public string[] FlagNames { get; set; }
+
+            // named args starting with -- or /
+            // expects a value
+            public string[] SingleValueArgs { get; set; }
+
+            // named arg starting with -- or /
+            // can accept an entire list of values
+            public string[] ListValueArgs { get; set; }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <typeparam name="T">Strongly type the argument's value as this type</typeparam>
+            /// <param name="options">Array of short and long option names</param>
+            /// <param name="dest">Destination option name</param>
+            /// <param name="isConstant">Always use the default value for this option</param>
+            /// <param name="defaultValue">Default value to be used</param>
+            /// <param name="valueConverter">Func to transform the original string value the strongly-typed value</param>
+            /// <param name="callback">Action to call after the argument is found and it's value has been converted</param>
+            /// <example>
+            /// parser.add_option("-f", "--file", dest="filename",
+            ///      help="write report to FILE", metavar="FILE")
+            /// parser.add_option("-q", "--quiet",
+            ///      action="store_false", dest="verbose", default=True,
+            ///      help="don't print status messages to stdout")
+            /// </example>
+            public void AddTypedOption<T>(string[] options,
+                                          string dest,
+                bool isConstant,
+                                          T defaultValue,
+                                          Func<string, T> valueConverter,
+                                          Action<T> callback)
+            {
+
+            }
+
+            public void AddCommandRoute<T>(string[] commandName, Action<T> callback)
+            {
+                // when the first arg == any commandName then parse options into the set type
+                // fires the callback passing in the parsed options class
+            }
+
+            // generic parse to set can return
+            // list of named args matched with their possible values (values after the named arg and before the next named arg)
+            // and list of positional args (values before any named args)
+            // flags like "-wfOUTFILE" would result in -w -> fOUTFILE
+            // flags like "/wfOUTFILE" would result in /wfOUTFILE -> no value ( / args assume long name)
         }
 
         public static ArgSet ParseToSet(IEnumerable<string> args, params char[] expectedFlags)
