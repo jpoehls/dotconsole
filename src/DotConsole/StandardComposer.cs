@@ -18,7 +18,7 @@ namespace DotConsole
 
                 if (paramInfo.Names.Count() > 0)
                 {
-                    var value = FindValueByName(args, paramInfo.Names);
+                    var value = args.GetNamedArgValues(paramInfo.Names).FirstOrDefault();
                     if (value != null)
                     {
                         command.SetParameterValue(prop, value);
@@ -31,30 +31,6 @@ namespace DotConsole
                     command.SetParameterValue(prop, args.ElementAtOrDefault(paramInfo.Position - 1));
                 }
             }
-        }
-
-        private static string FindValueByName(IEnumerable<string> args, IEnumerable<string> possibleNames)
-        {
-            string value = null;
-            for (int i = 0; i < args.Count(); i++)
-            {
-                var arg = args.ElementAt(i);
-                if (arg.StartsWith("/") || arg.StartsWith("--") || arg.StartsWith("-"))
-                {
-                    var name = arg.TrimStart("/-".ToCharArray());
-                    if (possibleNames.Contains(name))
-                    {
-                        // assume value is the next argument in the list
-                        value = args.ElementAt(i + 1);
-
-                        // skip the next argument since we counted it as the value
-                        //i = i + 1;
-                        break;
-                    }
-                }
-            }
-
-            return value;
         }
     }
 }
