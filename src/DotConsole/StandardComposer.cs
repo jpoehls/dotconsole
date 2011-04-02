@@ -12,6 +12,8 @@ namespace DotConsole
         {
             public string Arg { get; set; }
             public bool Used { get; set; }
+            public bool IsName { get; set; }
+            public int Position { get; set; }
         }
 
         public StandardComposer()
@@ -34,7 +36,7 @@ namespace DotConsole
         public StringComparer ParameterNameComparer { get; set; }
 
         // TODO: change this to a regex. names can only by ^[\w\d\-_]+$ -- but regex should support parsing any embedded value as well
-        protected static readonly string[] ParameterNamePrefixes = new[] {"--", "/"};
+        protected static readonly string[] ParameterNamePrefixes = new[] { "--", "/" };
 
         public virtual void ComposeParameters(ICommand command, IEnumerable<string> args)
         {
@@ -42,7 +44,7 @@ namespace DotConsole
                 return;
 
             var parameterProps = command.GetParameters();
-            var argList = args.Select(x => new ParsableArg {Used = false, Arg = x}).ToList();
+            var argList = args.Select(x => new ParsableArg { Used = false, Arg = x }).ToList();
 
             // keep track of which parameters we have processed (found potential values for)
             var processedParameters = new List<PropertyInfo>();
@@ -66,13 +68,14 @@ namespace DotConsole
                         if (IsMatchingNamedArg(arg.Arg, paramInfo.Names))
                         {
                             arg.Used = true;
+                            arg.IsName = true;
                             processedParameters.Add(prop);
 
                             var embeddedValue = GetValueFromNamedArg(arg.Arg);
 
-                            if (typeof (IList).IsAssignableFrom(prop.PropertyType))
+                            if (typeof(IList).IsAssignableFrom(prop.PropertyType))
                             {
-                                var list = (IList) prop.GetValue(command, null);
+                                var list = (IList)prop.GetValue(command, null);
 
                                 // else if parameter is ILIST
                                 //   then get value from arg (split on = or : then on , or ;)
@@ -80,10 +83,10 @@ namespace DotConsole
 
                                 // TODO: add multi-value splitting and add items to the list
                             }
-                                // TODO: add support for dictionaries with any key and value type
-                            else if (typeof (IDictionary<string, string>).IsAssignableFrom(prop.PropertyType))
+                            // TODO: add support for dictionaries with any key and value type
+                            else if (typeof(IDictionary<string, string>).IsAssignableFrom(prop.PropertyType))
                             {
-                                var dictionary = (IDictionary<string, string>) prop.GetValue(command, null);
+                                var dictionary = (IDictionary<string, string>)prop.GetValue(command, null);
 
                                 // else if parameter is IDICTIONARY
                                 //   then get value from arg (split on = or :, then on , or ;, split again on = or : to get keys and values)
@@ -91,7 +94,7 @@ namespace DotConsole
 
                                 // TODO: add key/value parsing and add items to the dictionary
                             }
-                            else if (typeof (Enum).IsAssignableFrom(prop.PropertyType))
+                            else if (typeof(Enum).IsAssignableFrom(prop.PropertyType))
                             {
                                 string enumValue = null;
                                 if (embeddedValue != null)
@@ -116,7 +119,7 @@ namespace DotConsole
                                     }
                                 }
                             }
-                            else if (prop.PropertyType == typeof (bool))
+                            else if (prop.PropertyType == typeof(bool))
                             {
                                 // set to TRUE since we found an arg with this name
                                 prop.SetValue(command, true, null);
@@ -145,6 +148,23 @@ namespace DotConsole
 
             #region - Assign positional args -
 
+            // Assign position numbers such that named args
+            // and their subsequent values only consume 1 position.
+            var positionCounter = 0;
+            for (int i = 0; i < argList.Count; i++)
+            {
+                if (argList[i].IsName)
+                {
+                    argList[i].Position = positionCounter;
+                    positionCounter++;
+                }
+                else if(!argList[i].Used)
+                {
+                    argList[i].Position = positionCounter;
+                    positionCounter++;
+                }
+            }
+
             // remove any used args
             argList.RemoveAll(x => x.Used);
 
@@ -163,15 +183,16 @@ namespace DotConsole
                     // if the parameter accepts a positional value
                     if (paramInfo.Position >= 0)
                     {
-                        // and if there is an arg at that position
-                        if (argList.Count >= paramInfo.Position + 1)
+                        var arg = argList.SingleOrDefault(x => x.Position == paramInfo.Position);
+                        // and if there is an arg at that position)
+                        if (arg != null)
                         {
                             // note that even though we mark it as used (to exclude from the catch all), positional args can be reused (ex: 2 parameters can collect an arg in position 0)
-                            argList[paramInfo.Position].Used = true;
-                            var value = argList[paramInfo.Position].Arg;
+                            arg.Used = true;
+                            var value = arg.Arg;
 
                             // note that lists and dictionaries are not supported for positional args
-                            if (typeof (Enum).IsAssignableFrom(prop.PropertyType))
+                            if (typeof(Enum).IsAssignableFrom(prop.PropertyType))
                             {
                                 var typedEnumValue = Enum.Parse(prop.PropertyType, value, false);
                                 if (typedEnumValue != null)
@@ -179,7 +200,7 @@ namespace DotConsole
                                     prop.SetValue(command, typedEnumValue, null);
                                 }
                             }
-                            else if (prop.PropertyType == typeof (bool))
+                            else if (prop.PropertyType == typeof(bool))
                             {
                                 // set to TRUE since we found an arg with this name
                                 prop.SetValue(command, true, null);
@@ -207,9 +228,9 @@ namespace DotConsole
                 if (paramInfo.IsCatchAll)
                 {
                     // the catch-all parameter must be a list of strings
-                    if (typeof (IList<string>).IsAssignableFrom(prop.PropertyType))
+                    if (typeof(IList<string>).IsAssignableFrom(prop.PropertyType))
                     {
-                        var list = (IList<string>) prop.GetValue(command, null);
+                        var list = (IList<string>)prop.GetValue(command, null);
 
                         // add all of the remaining args to the catch-all list
                         foreach (var arg in argList)
@@ -255,7 +276,7 @@ namespace DotConsole
         private static string GetValueFromNamedArg(string arg)
         {
             string value = null;
-            var index = arg.IndexOfAny(new[] {':', '='});
+            var index = arg.IndexOfAny(new[] { ':', '=' });
             if (index > -1)
             {
                 value = arg.Substring(index + 1);
@@ -274,7 +295,7 @@ namespace DotConsole
         {
             if (IsNamedArg(arg))
             {
-                var name = arg.TrimStart(new[] {'-', '/'});
+                var name = arg.TrimStart(new[] { '-', '/' });
                 if (namesToMatch.Contains(name))
                 {
                     return true;
