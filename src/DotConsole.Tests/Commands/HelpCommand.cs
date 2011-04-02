@@ -12,10 +12,10 @@ namespace DotConsole.Tests.Commands
             get { return _names; }
         }
 
-        [Parameter(Position = 1)]
+        [Parameter(Position = 0)]
         public string TopicName { get; set; }
 
-        [Parameter(Position = 2)]
+        [Parameter(Position = 1)]
         public string Verbosity { get; set; }
 
         public void Execute()

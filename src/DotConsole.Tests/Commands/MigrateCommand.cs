@@ -11,10 +11,10 @@ namespace DotConsole.Tests.Commands
             get { return _names; }
         }
 
-        [Parameter("connection", "c", Position = 1)]
+        [Parameter("connection", "c", Position = 0)]
         public string Connection { get; set; }
 
-        [Parameter("version", "v", Position = 2)]
+        [Parameter("version", "v", Position = 1)]
         public long TargetVersion { get; set; }
 
         public void Execute()

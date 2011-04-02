@@ -53,9 +53,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\MigrateCommand.cs" />
-    <Compile Include="StandardComposerTests.cs" />
+    <Compile Include="StandardComposer_MigrateCommand_Tests.cs" />
     <Compile Include="Commands\HelpCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StandardComposer_HelpCommand_Tests.cs" />
     <Compile Include="StandardRouterTests.cs" />
   </ItemGroup>
   <ItemGroup>
