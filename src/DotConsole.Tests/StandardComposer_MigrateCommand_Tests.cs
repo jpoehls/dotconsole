@@ -17,7 +17,7 @@ namespace DotConsole.Tests
         }
 
         [TestCase("/c", "some connection")]
-        [TestCase("some connection")]
+        [TestCase("some connection", null)] // the null is to make NUnit happy
         public void ComposeParameters_should_parse_Connection_parameter_when_Version_args_are_missing(params string[] testArgs)
         {
             // act
@@ -29,7 +29,6 @@ namespace DotConsole.Tests
 
         [TestCase("some connection", "101", Description = "No names")]
         [TestCase("/c", "some connection", "101", Description = "/c named")]
-        [TestCase("/v", "101", "some connection", Description = "/v named")]
         public void ComposeParameters_should_set_named_parameters_by_position_when_names_are_omitted(params string[] testArgs)
         {
             // act

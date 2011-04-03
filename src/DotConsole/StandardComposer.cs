@@ -44,7 +44,10 @@ namespace DotConsole
                 return;
 
             var parameterProps = command.GetParameters();
-            var argList = args.Select(x => new ParsableArg { Used = false, Arg = x }).ToList();
+            var argList = args
+                .Where(x => x != null)
+                .Select(x => new ParsableArg { Used = false, Arg = x })
+                .ToList();
 
             // keep track of which parameters we have processed (found potential values for)
             var processedParameters = new List<PropertyInfo>();
@@ -158,7 +161,7 @@ namespace DotConsole
                     argList[i].Position = positionCounter;
                     positionCounter++;
                 }
-                else if(!argList[i].Used)
+                else if (!argList[i].Used)
                 {
                     argList[i].Position = positionCounter;
                     positionCounter++;
