@@ -49,6 +49,8 @@
   <ItemGroup>
     <Compile Include="ArgumentHelpers.cs" />
     <Compile Include="CommandHelpers.cs" />
+    <Compile Include="ICommandLocator.cs" />
+    <Compile Include="MefCommandLocator.cs" />
     <Compile Include="StandardComposer.cs" />
     <Compile Include="StandardRouter.cs" />
     <Compile Include="ICommandComposer.cs" />

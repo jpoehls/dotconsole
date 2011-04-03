@@ -13,7 +13,7 @@ namespace DotConsole.Tests
         [SetUp]
         public void Setup()
         {
-            _router = new StandardRouter();
+            _router = new StandardRouter(new MefCommandLocator(), new StandardComposer());
         }
 
         [Test]
