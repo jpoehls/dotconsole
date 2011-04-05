@@ -2,7 +2,7 @@
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <title>DotConsole</title>
+    <title>{{ page.title }}</title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <!--
     <meta name="description" content="FubuMVC, a wrist-friendly .NET-based web MVC framework built for us, by us with an emphasis on DRY, composition vs. inheritance, SOLID principles, testability, pluggability, and conventional configuration.">
@@ -13,50 +13,9 @@
   </head>
   <body style="margin: 0; padding:0;">
     <div id="main">
-    <div id="head">
-      <h1><a href="/"><img src="/images/terminal_icon.png" style="height: 1.5em;" /> DotConsole</a></h1>
     
-      <ul id="menu">
-        <li><a href="http://github.com/jpoehls/dotconsole">Git powered</a></li>
-        <li><a href="#">NuGet pushed</a></li>
-      </ul>
-    </div>
-   
-    <p class="intro">
-      <span class="l1">Command routing, strongly-typed argument parsing,</span>
-      <span class="l2">validation, and automatic usage help for console applications.</span>
-      <em>Make console apps that don't suck. &#8212; Faster.</em>
-    </p>
+    {{ content }}
     
-    <h2>Getting started&hellip;</h2>
-    <ul id="getting-started">
-      <li><strong>1<sup>st</sup></strong> Read the <a href="#">DotConsole Guides</a> to get started</li>
-      <li><strong>2<sup>nd</sup></strong> Check out the <a href="#">wiki</a> for the latest details</li>
-    </ul>
-    
-    <!--
-    <h2>Committers&hellip;</h2>
-    <p> The current team consists of (in alphabetical order):
-        <a href="http://www.joshua-arnold.com/">Josh Arnold</a>,
-        Brandon Behrens,
-        <a href="http://joshuaflanagan.lostechies.com">Joshua Flanagan</a>, 
-        <a href="http://blog.robertgreyling.com/">Robert Greyling</a>, 
-        <a href="http://codebetter.com/blogs/jeremy.miller/">Jeremy Miller</a>, 
-        <a href="http://chadmyers.lostechies.com/">Chad Myers</a>, and
-        <a href="http://blog.timtyrrell.net/">Tim Tyrrell</a>
-    </p>
-
-    <h2>Contributors&hellip;</h2>
-    <p>FubuMVC wouldn't be possible without the time and effort of its contributors. 
-       Thank you for everyone who has ever committed, sent a pull request, or offered advice. In no particular order: Nieve, Ryan Rauh, Ryan Kelley, Kevin Miller, Alex Henning Johannessen, Mike Murray, Corey Kaylor, Dru Sellers, Jason Staten, Andrew Browne, Bob Pace, Christian Deger, Jason Smale, Karl Seguin, and Jaime febres Velez.
-    </p>
-    
-    <p>Special thanks goes to <a href="http://jagregory.com/">James Gregory</a> for the code for this site, the wiki, and lots of other help and support.</p>
-    
-    <h2>Latest Build&hellip;</h2>
-    <script type="text/javascript" src="http://teamcity.codebetter.com/externalStatus.html?js=1&withCss=true&buildTypeId=bt24">
-    </script>    
-    -->
     <p class="copy">DotConsole is &copy; 2011 <a href="http://www.zduck.com">Joshua Poehls</a>
      under the <a href="https://github.com/jpoehls/dotconsole/blob/master/license.txt">MIT license</a>.
     </p>
