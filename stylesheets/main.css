@@ -2,6 +2,10 @@ iframe, #conash3D0{
 	display: none;
 }
 
+body {
+  
+}
+
 #main {
 	margin: 0 auto;
 	width: 400px;
@@ -21,7 +25,7 @@ h2 {
 }
 
 a {
-	color: #8E0000;
+	color: #060;
 	text-decoration: none;
 }
 
@@ -53,15 +57,18 @@ p.intro span, p.intro em {
 }
 
 p.intro span.l1, #getting-started li strong {
-	background: #EAE9DA;
+	background: #111;
+  color: limegreen;
 }
 
 p.intro span.l2 {
-	background: #EDECDF;
+	background: #111;
+  color: limegreen;
 }
 
 p.intro em {
-	background: #EFEEE4;
+	background: #111;
+  color: limegreen;
 }
 
 p.notice {
@@ -117,7 +124,7 @@ div.alt code {
 }
 
 #menu a:hover, #menu .focus {
-	background: #900;
+	background: #060;
 	color: #FFF;
 	text-decoration: none;
 }
@@ -150,7 +157,7 @@ p.copy {
 	width: 40px;
 	text-align: center;
 	padding: 10px 0 0 0;
-	color: #666;
+	color: limegreen;
 	margin: -12px 10px 0 -10px;
 }
 
