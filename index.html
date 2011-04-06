@@ -7,8 +7,9 @@ title: DotConsole
        <h1><a href="/"><img src="/images/terminal_icon.png" style="height: 1.5em;" /> DotConsole</a></h1>
     
       <ul id="menu">
-        <li><a href="http://github.com/jpoehls/dotconsole">Git powered</a></li>
-        <li><a href="#">NuGet deployed</a></li>
+        <li><a href="http://github.com/jpoehls/dotconsole">Git the Source</a></li>
+        <li><a href="#">Install the Package</a></li>
+        <li><a href="#">Read the Guides</a></li>
       </ul>
     </div>
    
@@ -20,9 +21,64 @@ title: DotConsole
     
     <h2>Getting started&hellip;</h2>
     <ul id="getting-started">
-      <li><strong>1<sup>st</sup></strong> Read the <a href="#">DotConsole Guides</a> to get started</li>
-      <li><strong>2<sup>nd</sup></strong> Check out the <a href="#">wiki</a> for the latest details</li>
+      <li><strong>1<sup>st</sup></strong> Install the DotConsole package <a href="#">using NuGet</a> or <a href="#">download it</a> old school.</li>
+      <li><strong>2<sup>nd</sup></strong> Create a <a href="#">command</a>, add some <a href="#">parameters</a>,
+        and use the built-in <a href="http://msdn.microsoft.com/en-us/library/system.componentmodel.dataannotations.aspx">DataAnnotations</a>
+        for validation.<br/>
+        <pre>// todo: add highlighting
+
+public void PingCommand : ICommand
+{
+  public IEnumerable<string> CommandNames
+  {
+    get
+    {
+      return new string[] { "ping" };
+    }
+  }
+  
+  [Parameter(Name = "hostname", Position = 0)]
+  [System.ComponentModel.DataAnnotations.Required]
+  public string HostName { get; set; }
+  
+  public void Execute()
+  {
+    var pinger = new System.Net.NetworkInformation.Ping();
+    var reply = pinger.Send(HostName);
+    if (reply.Status == IPStatus.Success)
+    {
+      Console.WriteLine("Pong. They were awake!");
+    }
+    else
+    {
+      Console.WriteLine("No reply. Maybe they were sleeping?");
+    }
+  }
+}</pre></li>
+      <li><strong>3<sup>rd</sup></strong> Add some <a href="#">bootstrapping code</a> to your application's <code>Main()</code> method.<br/>
+        <pre>// todo: add highlighting
+
+public void Main()
+{
+  // todo: put code snippet here
+}</pre></li>
+      <li><strong>4<sup>th</sup></strong> Run your app and try it out.
+      <pre>// todo: add highlighting
+
+<b>&gt; MyApp.exe help</b>
+// todo: show output
+
+<b>&gt; MyApp.exe ping</b>
+// todo: show output
+
+<b>&gt; MyApp.exe ping google.com</b>
+<i># or, MyApp.exe ping --hostname google.com</i>
+<i># or, MyApp.exe ping /hostname google.com</i>
+// todo: show output</pre></li>
+      <li><strong>5<sup>th</sup></strong> Read the <a href="#">DotConsole Guides</a> to learn more.</li>
     </ul>
+    
+    <p><strong>Pro Tip!</strong> DotConsole works great with <a href="#">WinForms and WPF apps</a> too!</p>
     
     <!--
     <h2>Committers&hellip;</h2>
