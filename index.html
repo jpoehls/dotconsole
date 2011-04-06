@@ -26,60 +26,49 @@ title: DotConsole
       <li><strong>2<sup>nd</sup></strong> Create a <a href="#">command</a>, add some <a href="#">parameters</a>,
         <br/>and use the built-in <a href="http://msdn.microsoft.com/en-us/library/system.componentmodel.dataannotations.aspx">DataAnnotations</a>
         for validation.<br/>
-        <pre class="prettyprint">// todo: add highlighting
-
+        <pre class="prettyprint">
+using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Net.NetworkInformation;
 using DotConsole;
-        
-public void PingCommand : <a href="#">ICommand</a>
-{
-  public IEnumerable&lt;string&gt; <a href="#">CommandNames</a>
-  {
-    get
-    {
-      return new string[] { "ping" };
-    }
-  }
-  
-  <a href="#">[Parameter(Name = "hostname", Position = 0)]</a>
+
+<a href="#">[Command("hello")]</a>
+[Description("say's hello to someone")]
+public void SayHelloCommand : <a href="#">ICommand</a>
+{  
+  <a href="#">[Parameter(Name = "recipient", Position = 0)]</a>
   [Required]
-  public string HostName { get; set; }
+  public string Recipient { get; set; }
   
   public void <a href="#">Execute()</a>
   {
-    var pinger = new Ping();
-    var reply = pinger.Send(HostName);
-    if (reply.Status == IPStatus.Success)
-    {
-      Console.WriteLine("Success!");
-    }
-    else
-    {
-      Console.WriteLine("No reply.");
-    }
+    Console.WriteLine("Greetings, {0}.", Recipient);
   }
 }</pre></li>
       <li><strong>3<sup>rd</sup></strong> <a href="#">Bootstrap it all</a> in your <code>Main()</code> method.<br/>
-        <pre class="prettyprint">// todo: add highlighting
-
+        <pre class="prettyprint">
 public void Main()
 {
   // todo: put code snippet here
 }</pre></li>
       <li><strong>4<sup>th</sup></strong> <a href="#">Run your app</a> and try it out.
-      <pre class="prettyprint">// todo: add highlighting
+      <pre class="prettyprint">
+<b>&gt; greeter.exe help</b>
+Usage: greeter.exe &lt;command&gt; [&lt;args&gt;]
 
-<b>&gt; MyApp.exe help</b>
+Commands:
+  
+  hello   say's hello to someone
+
+Use "greeter.exe help &lt;command&gt;" to show details for a specific command.
+
+<b>&gt; greeter.exe hello</b>
 // todo: show output
 
-<b>&gt; MyApp.exe ping</b>
-// todo: show output
-
-<b>&gt; MyApp.exe ping google.com</b>
-<i># or, MyApp.exe ping --hostname google.com</i>
-<i># or, MyApp.exe ping /hostname google.com</i>
-// todo: show output</pre></li>
+<b>&gt; greeter.exe hello earthling</b>
+  <i># or <b>greeter.exe hello --recipient earthling</b></i>
+  <i># or <b>greeter.exe hello /recipient earthling</b></i>
+Greetings, earthling.</pre></li>
       <li><strong>5<sup>th</sup></strong> Read the <a href="#">DotConsole Guides</a> to learn more.</li>
     </ul>
     
