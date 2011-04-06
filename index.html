@@ -32,9 +32,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Net.NetworkInformation;
 using DotConsole;
         
-public void PingCommand : ICommand
+public void PingCommand : <a href="#">ICommand</a>
 {
-  public IEnumerable<string> CommandNames
+  public IEnumerable&lt;string&gt; <a href="#">CommandNames</a>
   {
     get
     {
@@ -42,11 +42,11 @@ public void PingCommand : ICommand
     }
   }
   
-  [Parameter(Name = "hostname", Position = 0)]
+  <a href="#">[Parameter(Name = "hostname", Position = 0)]</a>
   [Required]
   public string HostName { get; set; }
   
-  public void Execute()
+  public void <a href="#">Execute()</a>
   {
     var pinger = new Ping();
     var reply = pinger.Send(HostName);
