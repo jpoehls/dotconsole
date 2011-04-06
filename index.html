@@ -23,10 +23,14 @@ title: DotConsole
     <ul id="getting-started">
       <li><strong>1<sup>st</sup></strong> Install the DotConsole package <a href="#">using NuGet</a> or <a href="#">download it</a> old school.</li>
       <li><strong>2<sup>nd</sup></strong> Create a <a href="#">command</a>, add some <a href="#">parameters</a>,
-        and use the built-in <a href="http://msdn.microsoft.com/en-us/library/system.componentmodel.dataannotations.aspx">DataAnnotations</a>
+        <br/>and use the built-in <a href="http://msdn.microsoft.com/en-us/library/system.componentmodel.dataannotations.aspx">DataAnnotations</a>
         for validation.<br/>
         <pre>// todo: add highlighting
 
+using System.ComponentModel.DataAnnotations;
+using System.Net.NetworkInformation;
+using DotConsole;
+        
 public void PingCommand : ICommand
 {
   public IEnumerable<string> CommandNames
@@ -38,20 +42,20 @@ public void PingCommand : ICommand
   }
   
   [Parameter(Name = "hostname", Position = 0)]
-  [System.ComponentModel.DataAnnotations.Required]
+  [Required]
   public string HostName { get; set; }
   
   public void Execute()
   {
-    var pinger = new System.Net.NetworkInformation.Ping();
+    var pinger = new Ping();
     var reply = pinger.Send(HostName);
     if (reply.Status == IPStatus.Success)
     {
-      Console.WriteLine("Pong. They were awake!");
+      Console.WriteLine("Success!");
     }
     else
     {
-      Console.WriteLine("No reply. Maybe they were sleeping?");
+      Console.WriteLine("No reply.");
     }
   }
 }</pre></li>
