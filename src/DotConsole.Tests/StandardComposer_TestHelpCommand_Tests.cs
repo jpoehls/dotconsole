@@ -4,16 +4,16 @@ using NUnit.Framework;
 namespace DotConsole.Tests
 {
     [TestFixture]
-    public class StandardComposer_HelpCommand_Tests
+    public class StandardComposer_TestHelpCommand_Tests
     {
         private StandardComposer _composer;
-        private HelpCommand _command;
+        private TestHelpCommand _command;
 
         [SetUp]
         public void Setup()
         {
             _composer = new StandardComposer();
-            _command = new HelpCommand();
+            _command = new TestHelpCommand();
         }
 
         [Test]

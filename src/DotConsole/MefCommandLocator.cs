@@ -33,10 +33,16 @@ namespace DotConsole
             Commands = new List<Lazy<ICommand, ICommandMetadata>>();
             _catalog = new AggregateCatalog();
 
-            foreach (var catalog in catalogs)
+            if (catalogs != null)
             {
-                _catalog.Catalogs.Add(catalog);
+                foreach (var catalog in catalogs)
+                {
+                    _catalog.Catalogs.Add(catalog);
+                }
             }
+
+            // always include our built-in help command
+            _catalog.Catalogs.Add(new TypeCatalog(typeof(HelpCommand)));
 
             _container = new CompositionContainer(_catalog);
             _container.ComposeParts(this);

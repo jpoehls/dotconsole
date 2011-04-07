@@ -17,6 +17,18 @@ namespace DotConsole.Tests
         }
 
         [Test]
+        public void Route_should_return_the_TestTestHelpCommand_instead_of_the_builtin_help_command_when_the_help_command_name_is_specified()
+        {
+            
+        }
+
+        [Test]
+        public void Route_should_return_the_TestTestHelpCommand_instead_of_the_builtin_help_command_as_the_default_command()
+        {
+
+        }
+
+        [Test]
         public void Route_should_return_the_default_command_if_no_command_matches_the_first_arg()
         {
             // arrange
@@ -27,7 +39,7 @@ namespace DotConsole.Tests
 
             // assert
             Assert.IsNotNull(command, "command is null - routing failed");
-            Assert.IsInstanceOf(typeof(HelpCommand), command, "wrong command returned");
+            Assert.IsInstanceOf(typeof(TestHelpCommand), command, "wrong command returned");
         }
 
         [Test]
@@ -41,7 +53,7 @@ namespace DotConsole.Tests
 
             // assert
             Assert.IsNotNull(command, "command is null - routing failed");
-            Assert.IsInstanceOf(typeof(HelpCommand), command, "wrong command returned");
+            Assert.IsInstanceOf(typeof(TestHelpCommand), command, "wrong command returned");
         }
 
         [Test]
@@ -55,7 +67,7 @@ namespace DotConsole.Tests
 
             // assert
             Assert.IsNotNull(command, "command is null - routing failed");
-            Assert.IsInstanceOf(typeof(HelpCommand), command, "wrong command returned");
+            Assert.IsInstanceOf(typeof(TestHelpCommand), command, "wrong command returned");
         }
 
         [Test]
@@ -69,7 +81,7 @@ namespace DotConsole.Tests
 
             // assert
             Assert.IsNotNull(command, "command is null - routing failed");
-            Assert.IsInstanceOf(typeof(HelpCommand), command, "wrong command returned");
+            Assert.IsInstanceOf(typeof(TestHelpCommand), command, "wrong command returned");
         }
 
         [Test]
@@ -83,7 +95,7 @@ namespace DotConsole.Tests
 
             // assert
             Assert.IsNotNull(command, "command is null - routing failed");
-            Assert.IsInstanceOf(typeof(HelpCommand), command, "wrong command returned");
+            Assert.IsInstanceOf(typeof(TestHelpCommand), command, "wrong command returned");
         }
 
         [Test]

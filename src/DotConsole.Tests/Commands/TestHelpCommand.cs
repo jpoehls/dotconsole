@@ -1,7 +1,7 @@
 ﻿namespace DotConsole.Tests.Commands
 {
     [Command("help", "?", IsDefault = true)]
-    public class HelpCommand : ICommand
+    public class TestHelpCommand : ICommand
     {
         [Parameter(Position = 0)]
         public string TopicName { get; set; }
