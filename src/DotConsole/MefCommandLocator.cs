@@ -51,5 +51,15 @@ namespace DotConsole
 
             return cmd;
         }
+
+        public ICommand GetDefaultCommand()
+        {
+            ICommand cmd = Commands
+                .Where(c => c.Metadata.IsDefault)
+                .Select(c => c.Value)
+                .FirstOrDefault();
+
+            return cmd;
+        }
     }
 }

@@ -34,21 +34,36 @@ namespace DotConsole
 
         public virtual ICommand Route(IEnumerable<string> args)
         {
+            ICommand command = null;
+
             if (args != null)
             {
                 string commandName = args.FirstOrDefault();
                 if (commandName != null)
                 {
-                    var command = _locator.GetCommand(commandName);
+                    command = _locator.GetCommand(commandName);
 
-                    // Note that we are skipping the first arg since
-                    // it contains the command name (not an actual argument).
-                    _composer.ComposeParameters(command, args.Skip(1));
-                    return command;
+                    if (command != null)
+                    {
+                        // Note that we are skipping the first arg since
+                        // it contains the command name (not an actual argument).
+                        _composer.ComposeParameters(command, args.Skip(1));
+                    }
                 }
             }
 
-            return null;
+            // if we didn't find a specific command to route to
+            // then route to the default command if there is one
+            if (command == null)
+            {
+                command = _locator.GetDefaultCommand();
+                if (command != null)
+                {
+                    _composer.ComposeParameters(command, args);
+                }
+            }
+
+            return command;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace DotConsole.Tests.Commands
 {
-    [Command("help", "?")]
+    [Command("help", "?", IsDefault = true)]
     public class HelpCommand : ICommand
     {
         [Parameter(Position = 0)]
