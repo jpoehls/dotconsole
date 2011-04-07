@@ -48,8 +48,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArgumentHelpers.cs" />
+    <Compile Include="CommandAttribute.cs" />
     <Compile Include="CommandHelpers.cs" />
     <Compile Include="ICommandLocator.cs" />
+    <Compile Include="ICommandMetadata.cs" />
     <Compile Include="MefCommandLocator.cs" />
     <Compile Include="StandardComposer.cs" />
     <Compile Include="StandardRouter.cs" />

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
@@ -15,7 +16,7 @@ namespace DotConsole
         // ReSharper disable UnusedAutoPropertyAccessor.Local
         // MEF uses the private setter
         [ImportMany(typeof(ICommand))]
-        protected IEnumerable<ICommand> Commands { get; private set; }
+        protected IList<Lazy<ICommand, ICommandMetadata>> Commands { get; private set; }
         // ReSharper restore UnusedAutoPropertyAccessor.Local
 
         protected AggregateCatalog Catalog
@@ -23,12 +24,13 @@ namespace DotConsole
             get { return _catalog; }
         }
 
-        public MefCommandLocator() : this(new AssemblyCatalog(Assembly.GetCallingAssembly()))
-        {}
+        public MefCommandLocator()
+            : this(new AssemblyCatalog(Assembly.GetCallingAssembly()))
+        { }
 
         public MefCommandLocator(params ComposablePartCatalog[] catalogs)
         {
-            Commands = new List<ICommand>();
+            Commands = new List<Lazy<ICommand, ICommandMetadata>>();
             _catalog = new AggregateCatalog();
 
             foreach (var catalog in catalogs)
@@ -43,7 +45,8 @@ namespace DotConsole
         public virtual ICommand GetCommand(string commandName)
         {
             ICommand cmd = Commands
-                .Where(c => c.CommandNames.Contains(commandName))
+                .Where(c => c.Metadata.Names.Contains(commandName))
+                .Select(c => c.Value)
                 .FirstOrDefault();
 
             return cmd;

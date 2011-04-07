@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace DotConsole.Tests.Commands
+﻿namespace DotConsole.Tests.Commands
 {
+    [Command("help", "?")]
     public class HelpCommand : ICommand
     {
-        private readonly IEnumerable<string> _names = new[] { "help", "?" };
-
-        public IEnumerable<string> CommandNames
-        {
-            get { return _names; }
-        }
-
         [Parameter(Position = 0)]
         public string TopicName { get; set; }
 

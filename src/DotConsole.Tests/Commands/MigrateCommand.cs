@@ -1,16 +1,8 @@
-﻿using System.Collections.Generic;
-
-namespace DotConsole.Tests.Commands
+﻿namespace DotConsole.Tests.Commands
 {
+    [Command("migrate")]
     public class MigrateCommand : ICommand
     {
-        private readonly IEnumerable<string> _names = new[] { "migrate" };
-
-        public IEnumerable<string> CommandNames
-        {
-            get { return _names; }
-        }
-
         [Parameter("connection", "c", Position = 0)]
         public string Connection { get; set; }
 

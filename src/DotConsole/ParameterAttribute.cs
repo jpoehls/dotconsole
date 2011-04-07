@@ -15,7 +15,7 @@ namespace DotConsole
             Position = -1;
         }
 
-        public IEnumerable<string> Names { get; set; }
+        public IEnumerable<string> Names { get; private set; }
 
         public int Position { get; set; }
 

@@ -1,13 +1,10 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Linq;
+﻿using System.ComponentModel.Composition;
 
 namespace DotConsole
 {
     [InheritedExport(typeof(ICommand))]
     public interface ICommand
     {
-        IEnumerable<string> CommandNames { get; }
         void Execute();
     }
 }
