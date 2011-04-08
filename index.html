@@ -1,64 +1,74 @@
----
-layout: master
-title: DotConsole
----
-
+--- layout: master title: DotConsole ---
 <div id="head">
-       <h1><a href="/"><img src="/images/terminal_icon.png" style="height: 1.5em;" /> DotConsole</a></h1>
-    
-      <ul id="menu">
-        <li><a href="http://github.com/jpoehls/dotconsole" title="Git the source code">Source</a></li>
-        <li><a href="#" title="Install the NuGet package">Package</a></li>
-        <li><a href="#" title="Read the guides">Docs</a></li>
-      </ul>
-    </div>
-   
-    <p class="intro">
-      <span class="l1">Command routing, strongly-typed argument parsing,</span>
-      <span class="l2">validation, and automatic usage help for console applications.</span>
-      <em>Make console apps that don't suck. &#8212; Faster.</em>
-    </p>
-    
-    <h2>Getting started&hellip;</h2>
-    <ul id="getting-started">
-      <li><strong>1<sup>st</sup></strong> Install the DotConsole package <a href="#">using NuGet</a>
-        <br/>or <a href="#">download it</a> old school.</li>
-      <li><strong>2<sup>nd</sup></strong> Create a <a href="#">command</a>, add some <a href="#">parameters</a>,
-        <br/>and use the built-in <a href="http://msdn.microsoft.com/en-us/library/system.componentmodel.dataannotations.aspx">DataAnnotations</a>
-        for validation.<br/>
-        <pre class="prettyprint">
+  <h1>
+    <a href="/">
+      <img src="/images/terminal_icon.png" style="height: 1.5em;" />
+      DotConsole</a></h1>
+  <ul id="menu">
+    <li><a href="http://github.com/jpoehls/dotconsole" title="Git the source code">Source</a></li>
+    <li><a href="#" title="Install the NuGet package">Package</a></li>
+    <li><a href="#" title="Read the guides">Docs</a></li>
+  </ul>
+</div>
+<p class="intro">
+  <span class="l1">Command routing, strongly-typed argument parsing,</span> <span class="l2">
+    validation, and automatic usage help for console applications.</span> <em>Make console
+      apps that don't suck. &#8212; Faster.</em>
+</p>
+<h2>
+  Getting started&hellip;</h2>
+<ul id="getting-started">
+  <li><strong>1<sup>st</sup></strong> Install the DotConsole package <a href="#">using
+    NuGet</a>
+    <br />
+    or <a href="#">download it</a> old school.</li>
+  <li><strong>2<sup>nd</sup></strong> Create a <a href="#">command</a>, add some <a
+    href="#">parameters</a>,
+    <br />
+    and use the built-in <a href="http://msdn.microsoft.com/en-us/library/system.componentmodel.dataannotations.aspx">
+      DataAnnotations</a> for validation.<br />
+    <pre class="prettyprint">
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using DotConsole;
 
 <a href="#">[Command("hello")]</a>
-[Description("say's hello to someone")]
-public void SayHelloCommand : <a href="#">ICommand</a>
-{  
-  <a href="#">[Parameter(Name = "recipient", Position = 0)]</a>
+[Description("say hello to someone")]
+public class SayHelloCommand : ICommand
+{
+  <a href="#">[Parameter("recipient", Position = 0)]</a>
   [Required]
   public string Recipient { get; set; }
-  
-  public void <a href="#">Execute()</a>
+
+  public void Execute()
   {
     Console.WriteLine("Greetings, {0}.", Recipient);
   }
-}</pre></li>
-      <li><strong>3<sup>rd</sup></strong> <a href="#">Bootstrap it all</a> in your <code>Main()</code> method.<br/>
-        <pre class="prettyprint">
-public void Main()
+}</pre>
+  </li>
+  <li><strong>3<sup>rd</sup></strong> <a href="#">Bootstrap it all</a> in your <code>
+    Main()</code> method.<br />
+    <pre class="prettyprint">
+using DotConsole;
+
+internal class Program
 {
-  // todo: put code snippet here
-}</pre></li>
-      <li><strong>4<sup>th</sup></strong> <a href="#">Run your app</a> and try it out.
-      <pre class="prettyprint">
+  private static void Main(string[] args)
+  {
+    var commander = Commander.Standard();
+    commander.Run();
+  }
+}</pre>
+  </li>
+  <li><strong>4<sup>th</sup></strong> <a href="#">Run your app</a> and try it out.
+    <pre class="prettyprint">
 <b>&gt; greeter.exe help</b>
 Usage: greeter.exe &lt;command&gt; [&lt;args&gt;]
 
 Commands:
   
-  hello   say's hello to someone
+  hello   say hello to someone
 
 Use "greeter.exe help &lt;command&gt;" to show details for a specific command.
 
@@ -68,13 +78,15 @@ Use "greeter.exe help &lt;command&gt;" to show details for a specific command.
 <b>&gt; greeter.exe hello earthling</b>
   <i># or <b>greeter.exe hello --recipient earthling</b></i>
   <i># or <b>greeter.exe hello /recipient earthling</b></i>
-Greetings, earthling.</pre></li>
-      <li><strong>5<sup>th</sup></strong> Read the <a href="#">DotConsole Guides</a> to learn more.</li>
-    </ul>
-    
-    <p><strong>Pro Tip!</strong> This works with <a href="#">WinForms and WPF apps</a> too!</p>
-    
-    <!--
+Greetings, earthling.</pre>
+  </li>
+  <li><strong>5<sup>th</sup></strong> Read the <a href="#">DotConsole Guides</a> to
+    learn more.</li>
+</ul>
+<p>
+  <strong>Pro Tip!</strong> This works with <a href="#">WinForms and WPF apps</a>
+  too!</p>
+<!--
     <h2>Committers&hellip;</h2>
     <p> The current team consists of (in alphabetical order):
         <a href="http://www.joshua-arnold.com/">Josh Arnold</a>,
