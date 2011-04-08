@@ -39,6 +39,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -49,10 +50,14 @@
   <ItemGroup>
     <Compile Include="ArgumentHelpers.cs" />
     <Compile Include="CommandAttribute.cs" />
+    <Compile Include="Commander.cs" />
     <Compile Include="CommandHelpers.cs" />
+    <Compile Include="DataAnnotationValidator.cs" />
     <Compile Include="HelpCommand.cs" />
     <Compile Include="ICommandLocator.cs" />
     <Compile Include="ICommandMetadata.cs" />
+    <Compile Include="ICommandValidator.cs" />
+    <Compile Include="IHelpCommand.cs" />
     <Compile Include="MefCommandLocator.cs" />
     <Compile Include="StandardComposer.cs" />
     <Compile Include="StandardRouter.cs" />

@@ -14,7 +14,7 @@ namespace DotConsole
             get { return _composer; }
         }
 
-        protected ICommandLocator Locator
+        public ICommandLocator Locator
         {
             get { return _locator; }
         }
@@ -23,13 +23,6 @@ namespace DotConsole
         {
             _locator = locator;
             _composer = composer;
-        }
-
-        public virtual ICommand Route()
-        {
-            // Note that we are skipping the first arg since
-            // it contains the executable name (not an actual argument).
-            return Route(Environment.GetCommandLineArgs().Skip(1));
         }
 
         public virtual ICommand Route(IEnumerable<string> args)
@@ -60,6 +53,12 @@ namespace DotConsole
                 if (command != null)
                 {
                     _composer.ComposeParameters(command, args);
+
+                    // todo: add unit test to verify the CommandLocator is set for IHelpCommand's
+                    if (command is IHelpCommand)
+                    {
+                        ((IHelpCommand) command).CommandLocator = _locator;
+                    }
                 }
             }
 

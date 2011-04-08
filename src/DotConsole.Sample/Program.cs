@@ -9,7 +9,8 @@ namespace DotConsole.Sample
     {
         static void Main(string[] args)
         {
-            var registry = new StandardRouter(new MefCommandLocator(), new StandardComposer());
+            var commander = Commander.Standard();
+            commander.Run();
         }
     }
 }

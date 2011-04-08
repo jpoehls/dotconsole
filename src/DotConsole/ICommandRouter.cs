@@ -4,7 +4,7 @@ namespace DotConsole
 {
     public interface ICommandRouter
     {
-        ICommand Route();
+        ICommandLocator Locator { get; }
         ICommand Route(IEnumerable<string> args);
     }
 }

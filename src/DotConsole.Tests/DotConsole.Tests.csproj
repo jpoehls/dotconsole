@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\MigrateCommand.cs" />
+    <Compile Include="HelpCommandTests.cs" />
     <Compile Include="MefCommandLocatorTestsWithBuiltinCommands.cs" />
     <Compile Include="MefCommandLocatorTestsWithTestCommands.cs" />
     <Compile Include="StandardComposer_MigrateCommand_Tests.cs" />
