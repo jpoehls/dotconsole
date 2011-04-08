@@ -1,10 +1,8 @@
-using System.Collections.Generic;
-
 namespace DotConsole
 {
     public interface ICommandMetadata
     {
-        IEnumerable<string> Names { get; }
+        string Name { get; }
         bool IsDefault { get; }
     }
 }

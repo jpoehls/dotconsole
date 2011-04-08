@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DotConsole
 {
@@ -9,13 +7,15 @@ namespace DotConsole
     {
         public ParameterAttribute() : this(null) { }
 
-        public ParameterAttribute(params string[] names)
+        public ParameterAttribute(string name)
         {
-            Names = names ?? Enumerable.Empty<string>();
+            Name = name;
             Position = -1;
         }
 
-        public IEnumerable<string> Names { get; private set; }
+        public string Name { get; private set; }
+
+        public char Flag { get; set; }
 
         public string MetaName { get; set; }
 
@@ -26,7 +26,7 @@ namespace DotConsole
         public string GetMetaName()
         {
             if (string.IsNullOrWhiteSpace(MetaName))
-                return Names.FirstOrDefault();
+                return Name;
 
             return MetaName;
         }

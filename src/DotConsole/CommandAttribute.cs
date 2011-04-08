@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Linq;
 
 namespace DotConsole
 {
@@ -11,13 +9,13 @@ namespace DotConsole
     {
         public CommandAttribute() : this(null) { }
 
-        public CommandAttribute(params string[] names)
+        public CommandAttribute(string name)
             : base(typeof(ICommand))
         {
-            Names = names ?? Enumerable.Empty<string>();
+            Name = name;
         }
 
-        public IEnumerable<string> Names { get; private set; }
+        public string Name { get; private set; }
 
         public bool IsDefault { get; set; }
     }
