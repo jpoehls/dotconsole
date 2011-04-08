@@ -17,8 +17,18 @@ namespace DotConsole
 
         public IEnumerable<string> Names { get; private set; }
 
+        public string MetaName { get; set; }
+
         public int Position { get; set; }
 
         public bool IsCatchAll { get; set; }
+        
+        public string GetMetaName()
+        {
+            if (string.IsNullOrWhiteSpace(MetaName))
+                return Names.FirstOrDefault();
+
+            return MetaName;
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace DotConsole.Sample
         {
             var commander = Commander.Standard();
             commander.Run();
+            Console.ReadLine();
         }
     }
 }

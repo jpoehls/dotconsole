@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
@@ -35,6 +36,7 @@ namespace DotConsole
             else
             {
                 // todo: write out the list of all available commands
+                Console.WriteLine("Available commands:");
             }
         }
 
@@ -70,10 +72,10 @@ namespace DotConsole
                     syntax.Append("[");
                 }
 
-                syntax.Append("-");
-                syntax.Append(prop.Value.ShortName);
+                syntax.Append("--");
+                syntax.Append(GetDefaultName(prop.Value.Names));
                 syntax.Append(" ");
-                syntax.Append(prop.Value.ValueName ?? prop.Value.Name);
+                syntax.Append(prop.Value.GetMetaName().ToUpperInvariant());
 
                 if (optional)
                 {
@@ -92,6 +94,22 @@ namespace DotConsole
             Console.Write(syntax.ToString());
         }
 
+        private static string GetParameterDescription(PropertyInfo property)
+        {
+            var desc = property.GetCustomAttributes(typeof(DescriptionAttribute), true)
+                .Cast<DescriptionAttribute>()
+                .Select(x=>x.Description)
+                .FirstOrDefault();
+
+            return desc;
+        }
+        
+        // todo: get rid of this. the help should list all available command and parameter names
+        private static string GetDefaultName(IEnumerable<string> names)
+        {
+            return names.FirstOrDefault();
+        }
+
         /// <summary>
         /// Writes out the list of arguments for the given <see cref="ICommand" />.
         /// </summary>
@@ -108,13 +126,13 @@ namespace DotConsole
 
             var properties = command.GetParameters();
 
-            int maxArgNameLength = properties.Max(x => x.Value.ShortName.Length + x.Value.Name.Length) + 4;
+            int maxArgNameLength = properties.Max(x => /*x.Value.ShortName.Length*/ 0 + GetDefaultName(x.Value.Names).Length) + 4;
 
             foreach (var prop in properties)
             {
                 Console.Write("".PadLeft(IndentWidth));
-                Console.Write(string.Format("-{0}, -{1}", prop.Value.ShortName, prop.Value.Name).PadRight(maxArgNameLength + TabWidth));
-                Console.WriteLine(prop.Value.Description);
+                Console.Write(string.Format("-{0}, --{1}", /*prop.Value.ShortName*/ "X", GetDefaultName(prop.Value.Names)).PadRight(maxArgNameLength + TabWidth));
+                Console.WriteLine(GetParameterDescription(prop.Key));
             }
         }
 
@@ -131,10 +149,12 @@ namespace DotConsole
             //    -f, -firstArg       description of first argument
             //    -s, -secondArg      description of second argument       
 
+            var metadata = CommandLocator.GetCommandMetadata(command);
+
             Console.Write("Usage: ");
             Console.Write(executableName);
             Console.Write(" ");
-            Console.Write(command.CommandName);
+            Console.Write(GetDefaultName(metadata.Names));
             Console.Write(" ");
 
             WriteArgumentSyntax(command);
@@ -157,13 +177,16 @@ namespace DotConsole
             Console.WriteLine(string.Empty);
             Console.WriteLine("Available commands:");
 
-            int maxCommandNameLength = commands.Max(x => x.CommandName.Length);
+            var metadata = commands.ToDictionary(cmd => cmd, cmd => CommandLocator.GetCommandMetadata(cmd));
 
-            foreach (ICommand cmd in commands)
+            int maxCommandNameLength = metadata.Values.Max(x => GetDefaultName(x.Names).Length);
+
+            foreach (ICommand cmd in metadata.Keys)
             {
+                var cmdMetadata = metadata[cmd];
                 Console.Write("".PadLeft(2));
-                Console.Write("{0}", cmd.CommandName.PadRight(maxCommandNameLength + TabWidth));
-                Console.WriteLine(cmd.Description);
+                Console.Write("{0}", GetDefaultName(cmdMetadata.Names).PadRight(maxCommandNameLength + TabWidth));
+                Console.WriteLine(cmd.GetDescription());
             }
         }
     }

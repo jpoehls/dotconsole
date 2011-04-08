@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 
@@ -38,6 +39,17 @@ namespace DotConsole
                 .OrderBy(x => x.Attribute.Position)
                 .ToDictionary(x => x.Property, x => x.Attribute);
             return p;
+        }
+
+        public static string GetDescription(this ICommand command)
+        {
+            var type = command.GetType();
+            var desc = type.GetCustomAttributes(typeof(DescriptionAttribute), true)
+                .Cast<DescriptionAttribute>()
+                .Select(x => x.Description)
+                .FirstOrDefault();
+
+            return desc;
         }
     }
 }
