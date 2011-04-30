@@ -8,7 +8,7 @@ using System.Text;
 
 namespace DotConsole
 {
-    [Command(DefaultCommandName, "?", IsDefault = true)]
+    [Command(DefaultCommandName, IsDefault = true)]
     public class HelpCommand : IHelpCommand
     {
         public const string DefaultCommandName = "help";
@@ -71,9 +71,9 @@ namespace DotConsole
                 {
                     syntax.Append("[");
                 }
-
+                
                 syntax.Append("--");
-                syntax.Append(GetDefaultName(prop.Value.Names));
+                syntax.Append(prop.Value);
                 syntax.Append(" ");
                 syntax.Append(prop.Value.GetMetaName().ToUpperInvariant());
 
@@ -103,12 +103,6 @@ namespace DotConsole
 
             return desc;
         }
-        
-        // todo: get rid of this. the help should list all available command and parameter names
-        private static string GetDefaultName(IEnumerable<string> names)
-        {
-            return names.FirstOrDefault();
-        }
 
         /// <summary>
         /// Writes out the list of arguments for the given <see cref="ICommand" />.
@@ -126,12 +120,12 @@ namespace DotConsole
 
             var properties = command.GetParameters();
 
-            int maxArgNameLength = properties.Max(x => /*x.Value.ShortName.Length*/ 0 + GetDefaultName(x.Value.Names).Length) + 4;
+            int maxArgNameLength = properties.Max(x => /*x.Value.ShortName.Length*/ 0 + x.Value.Name.Length) + 4;
 
             foreach (var prop in properties)
             {
                 Console.Write("".PadLeft(IndentWidth));
-                Console.Write(string.Format("-{0}, --{1}", /*prop.Value.ShortName*/ "X", GetDefaultName(prop.Value.Names)).PadRight(maxArgNameLength + TabWidth));
+                Console.Write(string.Format("-{0}, --{1}", /*prop.Value.ShortName*/ "X", prop.Value.Name).PadRight(maxArgNameLength + TabWidth));
                 Console.WriteLine(GetParameterDescription(prop.Key));
             }
         }
@@ -154,7 +148,7 @@ namespace DotConsole
             Console.Write("Usage: ");
             Console.Write(executableName);
             Console.Write(" ");
-            Console.Write(GetDefaultName(metadata.Names));
+            Console.Write(metadata.Name);
             Console.Write(" ");
 
             WriteArgumentSyntax(command);
@@ -179,13 +173,13 @@ namespace DotConsole
 
             var metadata = commands.ToDictionary(cmd => cmd, cmd => CommandLocator.GetCommandMetadata(cmd));
 
-            int maxCommandNameLength = metadata.Values.Max(x => GetDefaultName(x.Names).Length);
+            int maxCommandNameLength = metadata.Values.Max(x => x.Name.Length);
 
             foreach (ICommand cmd in metadata.Keys)
             {
                 var cmdMetadata = metadata[cmd];
                 Console.Write("".PadLeft(2));
-                Console.Write("{0}", GetDefaultName(cmdMetadata.Names).PadRight(maxCommandNameLength + TabWidth));
+                Console.Write("{0}", cmdMetadata.Name.PadRight(maxCommandNameLength + TabWidth));
                 Console.WriteLine(cmd.GetDescription());
             }
         }

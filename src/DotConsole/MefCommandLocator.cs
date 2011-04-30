@@ -51,7 +51,7 @@ namespace DotConsole
         public virtual ICommand GetCommand(string commandName)
         {
             ICommand cmd = Commands
-                .Where(c => c.Metadata.Names.Contains(commandName))
+                .Where(c => string.Equals(c.Metadata.Name, commandName, StringComparison.OrdinalIgnoreCase))
                 .Select(c => c.Value)
                 .FirstOrDefault();
 

@@ -3,10 +3,10 @@
     [Command("migrate")]
     public class MigrateCommand : ICommand
     {
-        [Parameter("connection", "c", Position = 0)]
+        [Parameter("connection", Flag = 'c', Position = 0)]
         public string Connection { get; set; }
 
-        [Parameter("version", "v", Position = 1)]
+        [Parameter("version", Flag = 'v', Position = 1)]
         public long TargetVersion { get; set; }
 
         public void Execute()

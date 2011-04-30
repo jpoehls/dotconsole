@@ -60,7 +60,7 @@ namespace DotConsole
                 var paramInfo = parameterProps[prop];
 
                 // if this is a named parameter
-                if (paramInfo.Names.Count() > 0)
+                if (!string.IsNullOrEmpty(paramInfo.Name))
                 {
                     // the look for matching named args
                     foreach (var arg in argList)
@@ -68,7 +68,7 @@ namespace DotConsole
                         if (arg.Used)
                             continue;
 
-                        if (IsMatchingNamedArg(arg.Arg, paramInfo.Names))
+                        if (IsMatchingNamedArg(arg.Arg, paramInfo.Name))
                         {
                             arg.Used = true;
                             arg.IsName = true;
@@ -294,12 +294,12 @@ namespace DotConsole
             return named;
         }
 
-        private static bool IsMatchingNamedArg(string arg, IEnumerable<string> namesToMatch)
+        private static bool IsMatchingNamedArg(string arg, string nameToMatch)
         {
             if (IsNamedArg(arg))
             {
                 var name = arg.TrimStart(new[] { '-', '/' });
-                if (namesToMatch.Contains(name))
+                if (string.Equals(name, nameToMatch, StringComparison.OrdinalIgnoreCase))
                 {
                     return true;
                 }
