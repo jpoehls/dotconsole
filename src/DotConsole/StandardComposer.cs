@@ -210,7 +210,7 @@ namespace DotConsole
                             }
                             else
                             {
-                                prop.SetValue(command, Convert.ChangeType(value, prop.PropertyType), null);
+                                command.SetParameterValue(prop, value);
                             }
                         }
                     }

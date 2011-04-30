@@ -42,13 +42,13 @@ namespace DotConsole
             }
 
             // always include our built-in help command
-            _catalog.Catalogs.Add(new TypeCatalog(typeof(HelpCommand)));
+            _catalog.Catalogs.Add(new TypeCatalog(typeof(MagicalHelpCommand)));
 
             _container = new CompositionContainer(_catalog);
             _container.ComposeParts(this);
         }
 
-        public virtual ICommand GetCommand(string commandName)
+        public virtual ICommand GetCommandByName(string commandName)
         {
             ICommand cmd = Commands
                 .Where(c => string.Equals(c.Metadata.Name, commandName, StringComparison.OrdinalIgnoreCase))
@@ -58,7 +58,7 @@ namespace DotConsole
             return cmd;
         }
 
-        public ICommand GetDefaultCommand()
+        public virtual ICommand GetDefaultCommand()
         {
             ICommand cmd = Commands
                 .Where(c => c.Metadata.IsDefault)
@@ -68,7 +68,7 @@ namespace DotConsole
             return cmd;
         }
 
-        public ICommandMetadata GetCommandMetadata(ICommand command)
+        public virtual ICommandMetadata GetCommandMetadata(ICommand command)
         {
             ICommandMetadata meta = Commands
                 .Where(c => c.Value == command)
@@ -76,6 +76,11 @@ namespace DotConsole
                 .FirstOrDefault();
 
             return meta;
+        }
+
+        public virtual IDictionary<ICommand, ICommandMetadata> GetAllCommands()
+        {
+            return Commands.ToDictionary(x => x.Value, x => x.Metadata);
         }
     }
 }

@@ -27,13 +27,11 @@ namespace DotConsole.Tests
             Assert.IsInstanceOf<TestHelpCommand>(command);
         }
 
-        [TestCase("help")]
-        [TestCase("?")]
         public void GetCommand_should_return_TestHelpCommand(string commandName)
         {
             // arrange
             // act
-            var command = _locator.GetCommand(commandName);
+            var command = _locator.GetCommandByName("help");
 
             // assert
             Assert.IsInstanceOf<TestHelpCommand>(command);

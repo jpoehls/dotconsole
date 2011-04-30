@@ -34,7 +34,7 @@ namespace DotConsole
                 string commandName = args.FirstOrDefault();
                 if (commandName != null)
                 {
-                    command = _locator.GetCommand(commandName);
+                    command = _locator.GetCommandByName(commandName);
 
                     if (command != null)
                     {
@@ -55,9 +55,9 @@ namespace DotConsole
                     _composer.ComposeParameters(command, args);
 
                     // todo: add unit test to verify the CommandLocator is set for IHelpCommand's
-                    if (command is IHelpCommand)
+                    if (command is HelpCommand)
                     {
-                        ((IHelpCommand) command).CommandLocator = _locator;
+                        ((HelpCommand) command).CommandLocator = _locator;
                     }
                 }
             }

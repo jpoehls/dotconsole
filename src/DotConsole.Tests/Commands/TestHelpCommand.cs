@@ -3,10 +3,10 @@
     [Command("help", IsDefault = true)]
     public class TestHelpCommand : ICommand
     {
-        [Parameter(Position = 0)]
+        [Parameter(0)]
         public string TopicName { get; set; }
 
-        [Parameter(Position = 1)]
+        [Parameter(1)]
         public string Verbosity { get; set; }
 
         public void Execute()

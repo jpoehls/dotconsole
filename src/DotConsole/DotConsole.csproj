@@ -53,18 +53,18 @@
     <Compile Include="Commander.cs" />
     <Compile Include="CommandHelpers.cs" />
     <Compile Include="DataAnnotationValidator.cs" />
-    <Compile Include="HelpCommand.cs" />
-    <Compile Include="ICommandLocator.cs" />
-    <Compile Include="ICommandMetadata.cs" />
-    <Compile Include="ICommandValidator.cs" />
-    <Compile Include="IHelpCommand.cs" />
+    <Compile Include="MagicalHelpCommand.cs" />
+    <Compile Include="Interfaces\ICommandLocator.cs" />
+    <Compile Include="Interfaces\ICommandMetadata.cs" />
+    <Compile Include="Interfaces\ICommandValidator.cs" />
+    <Compile Include="Interfaces\HelpCommand.cs" />
     <Compile Include="MefCommandLocator.cs" />
     <Compile Include="StandardComposer.cs" />
     <Compile Include="StandardRouter.cs" />
-    <Compile Include="ICommandComposer.cs" />
-    <Compile Include="ICommandRouter.cs" />
+    <Compile Include="Interfaces\ICommandComposer.cs" />
+    <Compile Include="Interfaces\ICommandRouter.cs" />
     <Compile Include="ParameterAttribute.cs" />
-    <Compile Include="ICommand.cs" />
+    <Compile Include="Interfaces\ICommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -33,10 +33,7 @@ namespace DotConsole
             var catalogs = new List<ComposablePartCatalog>();
             if (commandAssemblies != null)
             {
-                foreach (var assembly in commandAssemblies)
-                {
-                    catalogs.Add(new AssemblyCatalog(assembly));
-                }
+                catalogs.AddRange(commandAssemblies.Select(assembly => new AssemblyCatalog(assembly)));
             }
 
             var locator = new MefCommandLocator(catalogs.ToArray());
@@ -54,12 +51,12 @@ namespace DotConsole
 
         /// <summary>
         /// Routes and executes the appropriate <see cref="ICommand" /> 
-        /// using <see cref="Environment.GetCommandLineArgs" />.
+        /// using <see cref="Environment.GetCommandLineArgs()" />.
         /// </summary>
         public virtual void Run()
         {
-            // Note that we are skipping the first arg since
-            // it contains the executable name (not an actual argument).
+            // We are skipping the first arg since it contains
+            // the executable name (not an actual argument).
             Run(Environment.GetCommandLineArgs().Skip(1));
         }
 
@@ -77,12 +74,10 @@ namespace DotConsole
                 {
                     // get the help command from the router so that
                     // we will use any custom help command the user has added
-                    command = _router.Locator.GetCommand(HelpCommand.DefaultCommandName);
-                    if (command is IHelpCommand)
+                    command = _router.Locator.GetCommandByName(HelpCommand.HelpCommandName);
+                    if (command is HelpCommand)
                     {
-                        // if the command supports showing validation errors then
-                        // pass it the syntax error messages to display
-                        ((IHelpCommand)command).ErrorMessages = _validator.ErrorMessages;
+                        ((HelpCommand)command).ErrorMessages = _validator.ErrorMessages;
                     }
                 }
 

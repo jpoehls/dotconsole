@@ -21,19 +21,17 @@ namespace DotConsole.Tests
             var command = _locator.GetDefaultCommand();
 
             // assert
-            Assert.IsInstanceOf<HelpCommand>(command);
+            Assert.IsInstanceOf<MagicalHelpCommand>(command);
         }
 
-        [TestCase("help")]
-        [TestCase("?")]
         public void GetCommand_should_return_HelpCommand(string commandName)
         {
             // arrange
             // act
-            var command = _locator.GetCommand(commandName);
+            var command = _locator.GetCommandByName("help");
 
             // assert
-            Assert.IsInstanceOf<HelpCommand>(command);
+            Assert.IsInstanceOf<MagicalHelpCommand>(command);
         }
     }
 }

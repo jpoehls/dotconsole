@@ -8,35 +8,44 @@ using System.Text;
 
 namespace DotConsole
 {
-    [Command(DefaultCommandName, IsDefault = true)]
-    public class HelpCommand : IHelpCommand
+    /// <summary>
+    /// Generates help output by introspecting over all
+    /// known commands in the <see cref="ICommandLocator"/>
+    /// and inspecting the parameters.
+    /// </summary>
+    [Command(HelpCommandName, IsDefault = true)]
+    public class MagicalHelpCommand : HelpCommand
     {
-        public const string DefaultCommandName = "help";
-
         private const int IndentWidth = 2;
         private const int TabWidth = 4;
 
-        public IEnumerable<string> ErrorMessages { get; set; }
+        public override IEnumerable<string> ErrorMessages { get; set; }
 
-        public ICommandLocator CommandLocator { get; set; }
+        public override ICommandLocator CommandLocator { get; set; }
 
         [Parameter("command", Position = 0)]
         public string CommandName { get; set; }
 
-        public void Execute()
+        public override void Execute()
         {
             // todo: if there are error messages then show those first
 
-            ICommand command = CommandLocator.GetCommand(CommandName);
+            ICommand command = CommandLocator.GetCommandByName(CommandName);
             if (command != null)
             {
-                // show help for this specific command
+                // show help for the specified command
                 WriteCommandHelp(command, Environment.GetCommandLineArgs()[0]);
             }
             else
             {
-                // todo: write out the list of all available commands
                 Console.WriteLine("Available commands:");
+                var commands = CommandLocator.GetAllCommands()
+                    .OrderBy(x => x.Value.Name);
+                foreach (var cmd in commands)
+                {
+                    Console.WriteLine("{0}{1}{2}{3}", new string(' ', IndentWidth), cmd.Value.Name,
+                        new string(' ', TabWidth), cmd.Key.GetDescription());
+                }
             }
         }
 
@@ -71,11 +80,11 @@ namespace DotConsole
                 {
                     syntax.Append("[");
                 }
-                
+
                 syntax.Append("--");
                 syntax.Append(prop.Value);
                 syntax.Append(" ");
-                syntax.Append(prop.Value.GetMetaName().ToUpperInvariant());
+                syntax.Append(prop.Value.MetaName.ToUpperInvariant());
 
                 if (optional)
                 {
@@ -98,7 +107,7 @@ namespace DotConsole
         {
             var desc = property.GetCustomAttributes(typeof(DescriptionAttribute), true)
                 .Cast<DescriptionAttribute>()
-                .Select(x=>x.Description)
+                .Select(x => x.Description)
                 .FirstOrDefault();
 
             return desc;

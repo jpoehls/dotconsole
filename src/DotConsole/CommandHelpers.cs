@@ -32,7 +32,7 @@ namespace DotConsole
                                  {
                                      Property = x,
                                      Attribute =
-                                 (ParameterAttribute) x.GetCustomAttributes(typeof (ParameterAttribute), false)
+                                 (ParameterAttribute)x.GetCustomAttributes(typeof(ParameterAttribute), false)
                                                           .FirstOrDefault()
                                  })
                 .Where(x => x.Attribute != null)

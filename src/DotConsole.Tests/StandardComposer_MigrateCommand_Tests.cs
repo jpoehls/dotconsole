@@ -16,8 +16,8 @@ namespace DotConsole.Tests
             _command = new MigrateCommand();
         }
 
-        [TestCase("/c", "some connection")]
-        [TestCase("some connection", null)] // the null is to make NUnit happy
+        [TestCase("/c", "some connection", Description = "Flag used")]
+        [TestCase("some connection", null, Description = "Position used")] // the null is to make NUnit happy
         public void ComposeParameters_should_parse_Connection_parameter_when_Version_args_are_missing(params string[] testArgs)
         {
             // act
