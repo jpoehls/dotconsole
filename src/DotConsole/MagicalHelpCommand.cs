@@ -23,7 +23,7 @@ namespace DotConsole
 
         public override ICommandLocator CommandLocator { get; set; }
 
-        [Parameter("command", Position = 0)]
+        [Parameter(0)]
         public string CommandName { get; set; }
 
         public override void Execute()
