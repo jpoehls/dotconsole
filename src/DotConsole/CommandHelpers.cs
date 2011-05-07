@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -19,7 +20,18 @@ namespace DotConsole
             }
             else
             {
-                parameterProperty.SetValue(command, Convert.ChangeType(value, parameterProperty.PropertyType), null);
+                object convertedValue;
+                try
+                {
+                    convertedValue = Convert.ChangeType(value, parameterProperty.PropertyType);
+                }
+                catch (Exception)
+                {
+                    Trace.TraceInformation("Failed to convert string value to {0}. [ Value: \"{1}\" ]",
+                                           parameterProperty.PropertyType.FullName, value);
+                    convertedValue = parameterProperty.PropertyType.GetDefaultValue();
+                }
+                parameterProperty.SetValue(command, convertedValue , null);
             }
         }
 

@@ -68,7 +68,7 @@ namespace DotConsole
                         if (arg.Used)
                             continue;
 
-                        if (IsMatchingNamedArg(arg.Arg, paramInfo.Name))
+                        if (IsMatchingNamedArg(arg.Arg, paramInfo.Name, paramInfo.Flag))
                         {
                             arg.Used = true;
                             arg.IsName = true;
@@ -294,12 +294,13 @@ namespace DotConsole
             return named;
         }
 
-        private static bool IsMatchingNamedArg(string arg, string nameToMatch)
+        private static bool IsMatchingNamedArg(string arg, string nameToMatch, char flag)
         {
             if (IsNamedArg(arg))
             {
                 var name = arg.TrimStart(new[] { '-', '/' });
-                if (string.Equals(name, nameToMatch, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(name, nameToMatch, StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(name, flag.ToString(), StringComparison.OrdinalIgnoreCase))
                 {
                     return true;
                 }
