@@ -12,6 +12,8 @@ namespace DotConsole
         private readonly ICommandRouter _router;
         private readonly ICommandValidator _validator;
 
+        public ICommandRouter Router { get { return _router; } }
+
         /// <summary>
         /// Gets a <see cref="Commander" /> that works with
         /// commands in the calling assembly.
