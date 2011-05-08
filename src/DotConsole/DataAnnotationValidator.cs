@@ -30,7 +30,7 @@ namespace DotConsole
 
                 foreach (ValidationAttribute attr in validationAttrs)
                 {
-                    if (!attr.IsValid(prop.GetValue(this, null)))
+                    if (!attr.IsValid(prop.GetValue(command, null)))
                     {
                         _errors.Add(attr.ErrorMessage);
                     }
