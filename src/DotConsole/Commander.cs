@@ -36,7 +36,18 @@ namespace DotConsole
                 catalogs.AddRange(commandAssemblies.Select(assembly => new AssemblyCatalog(assembly)));
             }
 
-            var locator = new MefCommandLocator(catalogs.ToArray());
+            return Commander.Standard(catalogs.ToArray());
+        }
+
+        /// <summary>
+        /// Gets a <see cref="Commander" /> that works with
+        /// commands in the given catalogs.
+        /// </summary>
+        /// <param name="catalogs">Catalogs that contain your <see cref="ICommand" /> implementations</param>
+        /// <returns></returns>
+        public static Commander Standard(params ComposablePartCatalog[] catalogs)
+        {
+            var locator = new MefCommandLocator(catalogs);
             var composer = new StandardComposer();
             var router = new StandardRouter(locator, composer);
             var validator = new DataAnnotationValidator();
