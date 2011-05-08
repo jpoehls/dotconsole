@@ -44,7 +44,7 @@ namespace DotConsole
         /// <summary>
         /// Initializes a new instance of <see cref="ParameterAttribute"/>.
         /// </summary>
-        /// <param name="position">Position at which this parameter should be expected if it is not passed be <see cref="Name"/> or <see cref="Flag"/>.</param>
+        /// <param name="position">Zero-based position at which this parameter should be expected if it is not passed be <see cref="Name"/> or <see cref="Flag"/>.</param>
         public ParameterAttribute(int position)
             : this()
         {
@@ -62,7 +62,7 @@ namespace DotConsole
         public char Flag { get; set; }
 
         /// <summary>
-        /// Gets/Sets the position at which this parameter should be expected
+        /// Gets/Sets the zero-based position at which this parameter should be expected
         /// if it is not passed by <see cref="Name"/> or <see cref="Flag"/>.
         /// </summary>
         public int Position { get; set; }
