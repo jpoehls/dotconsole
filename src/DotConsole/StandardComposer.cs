@@ -298,9 +298,11 @@ namespace DotConsole
         {
             if (IsNamedArg(arg))
             {
+                // Note: the name matching is case-insensitive but the FLAG is case-sensitive
+
                 var name = arg.TrimStart(new[] { '-', '/' });
                 if (string.Equals(name, nameToMatch, StringComparison.OrdinalIgnoreCase) ||
-                    string.Equals(name, flag.ToString(), StringComparison.OrdinalIgnoreCase))
+                    string.Equals(name, flag.ToString(), StringComparison.Ordinal))
                 {
                     return true;
                 }
