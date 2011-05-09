@@ -8,6 +8,9 @@ using System.Reflection;
 
 namespace DotConsole
 {
+    /// <summary>
+    /// Uses MEF to locate <see cref="ICommand"/> types in the application.
+    /// </summary>
     public class MefCommandLocator : ICommandLocator
     {
         private readonly AggregateCatalog _catalog;

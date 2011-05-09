@@ -7,6 +7,10 @@ using System.Reflection;
 
 namespace DotConsole
 {
+    /// <summary>
+    /// Bootstrapper for DotConsole. Handles coordinating all
+    /// the necessary steps to route, compose, validate and execute <see cref="ICommand"/> instances.
+    /// </summary>
     public class Commander
     {
         private readonly ICommandRouter _router;

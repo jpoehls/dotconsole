@@ -6,6 +6,10 @@ using System.Reflection;
 
 namespace DotConsole
 {
+    /// <summary>
+    /// Populates <see cref="ICommand"/> properties marked with the <see cref="ParameterAttribute"/>
+    /// from a list of arguments (typically from the command line).
+    /// </summary>
     public class StandardComposer : ICommandComposer
     {
         private class ParsableArg

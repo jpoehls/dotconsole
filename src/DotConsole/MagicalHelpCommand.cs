@@ -32,6 +32,9 @@ namespace DotConsole
             ExecutableName = Path.GetFileNameWithoutExtension(Environment.GetCommandLineArgs()[0]);
         }
 
+        /// <summary>
+        /// Gets/sets the name of the command to display help information for.
+        /// </summary>
         [Parameter(0)]
         public string CommandName { get; set; }
 

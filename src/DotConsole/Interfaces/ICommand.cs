@@ -2,7 +2,6 @@
 
 namespace DotConsole
 {
-    [InheritedExport(typeof(ICommand))]
     public interface ICommand
     {
         void Execute();

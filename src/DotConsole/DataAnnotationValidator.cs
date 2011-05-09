@@ -5,6 +5,10 @@ using System.Reflection;
 
 namespace DotConsole
 {
+    /// <summary>
+    /// Validates all <see cref="ICommand"/> properties marked with <see cref="ParameterAttribute"/>
+    /// and collects any validation error messages.
+    /// </summary>
     public class DataAnnotationValidator : ICommandValidator
     {
         private readonly List<string> _errors;

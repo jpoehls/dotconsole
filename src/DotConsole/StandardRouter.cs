@@ -4,6 +4,10 @@ using System.Linq;
 
 namespace DotConsole
 {
+    /// <summary>
+    /// Determines which <see cref="ICommand"/> should execute based
+    /// on a list of arguments (typically from the command line).
+    /// </summary>
     public class StandardRouter : ICommandRouter
     {
         private readonly ICommandComposer _composer;
