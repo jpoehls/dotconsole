@@ -88,9 +88,11 @@ namespace DotConsole
                     // get the help command from the router so that
                     // we will use any custom help command the user has added
                     command = _router.Locator.GetCommandByName(HelpCommand.HelpCommandName);
-                    if (command is HelpCommand)
+                    var helpCommand = command as HelpCommand;
+                    if (helpCommand != null)
                     {
-                        ((HelpCommand)command).ErrorMessages = _validator.ErrorMessages;
+                        helpCommand.CommandLocator = _router.Locator;
+                        helpCommand.ErrorMessages = _validator.ErrorMessages;
                     }
                 }
 

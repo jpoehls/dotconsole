@@ -18,13 +18,15 @@ namespace DotConsole
         public CommandAttribute(string name)
             : base(typeof(ICommand))
         {
-            Name = name;
+            _name = name;
         }
+
+        private readonly string _name;
 
         /// <summary>
         /// Gets/Sets the name of the command as it will be entered at the command line.
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get { return _name; } }
 
         /// <summary>
         /// Gets/Sets whether this is the default command if

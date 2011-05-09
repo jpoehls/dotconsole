@@ -6,8 +6,14 @@ namespace DotConsole
     {
         public const string HelpCommandName = "help";
 
-        public abstract ICommandLocator CommandLocator { get; set; }
-        public abstract IEnumerable<string> ErrorMessages { get; set; }
+        public ICommandLocator CommandLocator { get; set; }
+
+        public IEnumerable<string> ErrorMessages { get; set; }
+
+        #region ICommand Members
+
         public abstract void Execute();
+
+        #endregion
     }
 }

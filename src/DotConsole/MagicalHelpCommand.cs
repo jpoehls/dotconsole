@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -16,36 +17,67 @@ namespace DotConsole
     [Command(HelpCommandName, IsDefault = true)]
     public class MagicalHelpCommand : HelpCommand
     {
-        private const int IndentWidth = 2;
-        private const int TabWidth = 4;
+        private const int IndentWidth = 1;
+        private const int TabWidth = 3;
 
-        public override IEnumerable<string> ErrorMessages { get; set; }
+        private static readonly string ExecutableName;
 
-        public override ICommandLocator CommandLocator { get; set; }
+        static MagicalHelpCommand()
+        {
+            ExecutableName = Path.GetFileNameWithoutExtension(Environment.GetCommandLineArgs()[0]);
+        }
 
         [Parameter(0)]
         public string CommandName { get; set; }
 
         public override void Execute()
         {
-            // todo: if there are error messages then show those first
+            if (CommandLocator == null)
+            {
+                throw new InvalidOperationException(
+                    "CommandLocator property is null. Help command requires a non-null CommandLocator instance.");
+            }
 
             ICommand command = CommandLocator.GetCommandByName(CommandName);
+            ICommandMetadata commandMeta = (command != null)
+                ? CommandLocator.GetCommandMetadata(command)
+                : null;
+
+            if (ErrorMessages != null)
+            {
+                // write each error message to StdErr including the executable name and command name
+                foreach (var msg in ErrorMessages)
+                {
+                    Console.Error.Write(ExecutableName);
+                    if (commandMeta != null)
+                    {
+                        Console.Error.Write(" {0}", commandMeta.Name);
+                    }
+                    Console.Error.WriteLine(": {0}", msg);
+                }
+            }
+
             if (command != null)
             {
-                // show help for the specified command
-                WriteCommandHelp(command, Environment.GetCommandLineArgs()[0]);
+                WriteCommandHelp(command);
             }
             else
             {
-                Console.WriteLine("Available commands:");
-                var commands = CommandLocator.GetAllCommands()
-                    .OrderBy(x => x.Value.Name);
-                foreach (var cmd in commands)
-                {
-                    Console.WriteLine("{0}{1}{2}{3}", new string(' ', IndentWidth), cmd.Value.Name,
-                        new string(' ', TabWidth), cmd.Key.GetDescription());
-                }
+                WriteCommandList();
+            }
+        }
+
+        private void WriteCommandList()
+        {
+            Console.WriteLine("list of commands:");
+            Console.WriteLine();
+
+            var commands = CommandLocator.GetAllCommands()
+                .OrderBy(x => x.Value.Name);
+            foreach (var cmd in commands)
+            {
+                Console.WriteLine("{0}{1}{2}{3}", new string(' ', IndentWidth), cmd.Value.Name,
+                    new string(' ', TabWidth), cmd.Key.GetDescription());
             }
         }
 
@@ -142,7 +174,7 @@ namespace DotConsole
         /// <summary>
         /// Writes out the help verbiage for the given  <see cref="ICommand" />.
         /// </summary>
-        public void WriteCommandHelp(ICommand command, string executableName)
+        public void WriteCommandHelp(ICommand command)
         {
             //  SAMPLE OUTPUT
             //
@@ -155,7 +187,7 @@ namespace DotConsole
             var metadata = CommandLocator.GetCommandMetadata(command);
 
             Console.Write("Usage: ");
-            Console.Write(executableName);
+            Console.Write(ExecutableName);
             Console.Write(" ");
             Console.Write(metadata.Name);
             Console.Write(" ");
