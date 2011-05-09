@@ -1,6 +1,6 @@
 using System.ComponentModel.Composition.Hosting;
 using System.Reflection;
-using DotConsole.Tests.Commands;
+using DotConsole.Tests.StubCommands;
 using NUnit.Framework;
 
 namespace DotConsole.Tests
@@ -14,17 +14,6 @@ namespace DotConsole.Tests
         public void Setup()
         {
             _locator = new MefCommandLocator(new AssemblyCatalog(Assembly.GetExecutingAssembly()));
-        }
-
-        [Test]
-        public void GetDefaultCommand_should_return_TestHelpCommand()
-        {
-            // arrange
-            // act
-            var command = _locator.GetDefaultCommand();
-
-            // assert
-            Assert.IsInstanceOf<TestHelpCommand>(command);
         }
 
         public void GetCommand_should_return_TestHelpCommand(string commandName)

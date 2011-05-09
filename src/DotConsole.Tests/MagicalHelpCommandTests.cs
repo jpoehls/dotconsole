@@ -91,8 +91,9 @@ namespace DotConsole.Tests
             // arrange
             string expectedOutput = "list of commands:" + Environment.NewLine +
                                     Environment.NewLine +
-                                    " migrate     Migrates the database schema to the specified (or latest) version." + Environment.NewLine +
-                                    " something   Does something else.";
+                                    " help" + Environment.NewLine +
+                                    " testhelp" + Environment.NewLine +
+                                    " testmigrate" + Environment.NewLine;
 
             // act
             var output = CaptureConsoleOutput(() => _help.Execute());
@@ -119,8 +120,8 @@ namespace DotConsole.Tests
         public void Execute_should_include_command_name_in_error_message_output()
         {
             // arrange
-            string expectedOutput = _expectedExecutableName + " migrate: error message goes here" + Environment.NewLine;
-            _help.CommandName = "migrate";
+            string expectedOutput = _expectedExecutableName + " testmigrate: error message goes here" + Environment.NewLine;
+            _help.CommandName = "testmigrate";
             _help.ErrorMessages = new[] { "error message goes here" };
 
             // act
@@ -137,8 +138,9 @@ namespace DotConsole.Tests
             // arrange
             string expectedOutput = "list of commands:" + Environment.NewLine +
                                     Environment.NewLine +
-                                    " migrate     Migrates the database schema to the specified (or latest) version." + Environment.NewLine +
-                                    " something   Does something else.";
+                                    " help" + Environment.NewLine +
+                                    " testhelp" + Environment.NewLine +
+                                    " testmigrate" + Environment.NewLine;
 
             _help.ErrorMessages = new[] { "error message goes here" };
 

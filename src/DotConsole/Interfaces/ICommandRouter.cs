@@ -6,5 +6,6 @@ namespace DotConsole
     {
         ICommandLocator Locator { get; }
         ICommand Route(IEnumerable<string> args);
+        string GetCommandName(IEnumerable<string> args);
     }
 }

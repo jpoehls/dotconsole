@@ -31,8 +31,8 @@ namespace DotConsole
 
             if (args != null)
             {
-                string commandName = args.FirstOrDefault();
-                if (commandName != null)
+                var commandName = GetCommandName(args);
+                if (!string.IsNullOrWhiteSpace(commandName))
                 {
                     command = _locator.GetCommandByName(commandName);
 
@@ -45,24 +45,17 @@ namespace DotConsole
                 }
             }
 
-            // if we didn't find a specific command to route to
-            // then route to the default command if there is one
-            if (command == null)
-            {
-                command = _locator.GetDefaultCommand();
-                if (command != null)
-                {
-                    _composer.ComposeParameters(command, args);
-
-                    // todo: add unit test to verify the CommandLocator is set for IHelpCommand's
-                    if (command is HelpCommand)
-                    {
-                        ((HelpCommand) command).CommandLocator = _locator;
-                    }
-                }
-            }
-
             return command;
+        }
+
+        public string GetCommandName(IEnumerable<string> args)
+        {
+            string name = null;
+            if (args != null)
+            {
+                name = args.FirstOrDefault();
+            }
+            return name;
         }
     }
 }

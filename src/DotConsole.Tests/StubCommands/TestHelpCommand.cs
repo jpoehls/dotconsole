@@ -1,6 +1,6 @@
-﻿namespace DotConsole.Tests.Commands
+﻿namespace DotConsole.Tests.StubCommands
 {
-    [Command("help", IsDefault = true)]
+    [Command("testhelp")]
     public class TestHelpCommand : ICommand
     {
         [Parameter(0)]

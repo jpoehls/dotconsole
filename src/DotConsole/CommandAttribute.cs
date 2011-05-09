@@ -27,11 +27,5 @@ namespace DotConsole
         /// Gets/Sets the name of the command as it will be entered at the command line.
         /// </summary>
         public string Name { get { return _name; } }
-
-        /// <summary>
-        /// Gets/Sets whether this is the default command if
-        /// no specific command is specified in the command line arguments.
-        /// </summary>
-        public bool IsDefault { get; set; }
     }
 }

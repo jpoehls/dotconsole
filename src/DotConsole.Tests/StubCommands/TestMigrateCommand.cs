@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DotConsole.Tests.Commands
+namespace DotConsole.Tests.StubCommands
 {
-    [Command("migrate")]
-    public class MigrateCommand : ICommand
+    [Command("testmigrate")]
+    public class TestMigrateCommand : ICommand
     {
         [Required(ErrorMessage = "Connection is required.")]
         [Parameter("connection", Flag = 'c', Position = 0)]

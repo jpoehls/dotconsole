@@ -13,17 +13,6 @@ namespace DotConsole.Tests
             _locator = new MefCommandLocator(null);
         }
 
-        [Test]
-        public void GetDefaultCommand_should_return_HelpCommand()
-        {
-            // arrange
-            // act
-            var command = _locator.GetDefaultCommand();
-
-            // assert
-            Assert.IsInstanceOf<MagicalHelpCommand>(command);
-        }
-
         public void GetCommand_should_return_HelpCommand(string commandName)
         {
             // arrange

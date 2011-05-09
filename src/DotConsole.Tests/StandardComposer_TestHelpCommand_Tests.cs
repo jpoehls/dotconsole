@@ -1,4 +1,4 @@
-﻿using DotConsole.Tests.Commands;
+﻿using DotConsole.Tests.StubCommands;
 using NUnit.Framework;
 
 namespace DotConsole.Tests

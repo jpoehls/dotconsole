@@ -12,6 +12,12 @@ namespace DotConsole
         private readonly ICommandRouter _router;
         private readonly ICommandValidator _validator;
 
+        /// <summary>
+        /// Get/sets the name of the application as it should
+        /// be used in help command output.
+        /// </summary>
+        public static string ApplicationName { get; set; }
+
         public ICommandRouter Router { get { return _router; } }
 
         /// <summary>
@@ -81,22 +87,36 @@ namespace DotConsole
         public virtual void Run(IEnumerable<string> args)
         {
             var command = _router.Route(args);
+
             if (command != null)
             {
                 if (!_validator.ValidateParameters(command))
                 {
                     // get the help command from the router so that
                     // we will use any custom help command the user has added
-                    command = _router.Locator.GetCommandByName(HelpCommand.HelpCommandName);
-                    var helpCommand = command as HelpCommand;
-                    if (helpCommand != null)
-                    {
-                        helpCommand.CommandLocator = _router.Locator;
-                        helpCommand.ErrorMessages = _validator.ErrorMessages;
-                    }
+                    var helpCommand = new MagicalHelpCommand();
+                    helpCommand.CommandLocator = _router.Locator;
+                    helpCommand.ErrorMessages = _validator.ErrorMessages;
+
+                    command = helpCommand;
                 }
 
                 command.Execute();
+            }
+            else
+            {
+                // execute the help command if we no other command was found
+                var helpCommand = new MagicalHelpCommand();
+                helpCommand.CommandLocator = _router.Locator;
+
+                string commandName = _router.GetCommandName(args);
+
+                if (!string.IsNullOrWhiteSpace(commandName))
+                {
+                    helpCommand.ErrorMessages = new[] { "unknown command '" + commandName + "'" };
+                }
+
+                helpCommand.Execute();
             }
         }
     }

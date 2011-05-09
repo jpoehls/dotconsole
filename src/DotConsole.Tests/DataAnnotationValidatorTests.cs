@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using DotConsole.Tests.Commands;
+using DotConsole.Tests.StubCommands;
 using NUnit.Framework;
 
 namespace DotConsole.Tests
@@ -22,7 +22,7 @@ namespace DotConsole.Tests
         public void ValidateParameters_should_return_false_if_validation_fails()
         {
             // arrange
-            var cmd = new MigrateCommand();
+            var cmd = new TestMigrateCommand();
 
             // act
             var valid = _validator.ValidateParameters(cmd);
@@ -35,7 +35,7 @@ namespace DotConsole.Tests
         public void ValidateParameters_should_return_true_if_validation_succeeds()
         {
             // arrange
-            var cmd = new MigrateCommand();
+            var cmd = new TestMigrateCommand();
             cmd.Connection = "blah";
 
             // act
@@ -49,7 +49,7 @@ namespace DotConsole.Tests
         public void ErrorMessages_should_contain_validation_errors()
         {
             // arrange
-            var cmd = new MigrateCommand();
+            var cmd = new TestMigrateCommand();
 
             // act
             _validator.ValidateParameters(cmd);
@@ -62,7 +62,7 @@ namespace DotConsole.Tests
         public void ErrorMessages_should_be_empty_if_validation_succeeds()
         {
             // arrange
-            var cmd = new MigrateCommand();
+            var cmd = new TestMigrateCommand();
             cmd.Connection = "blah";
 
             // act

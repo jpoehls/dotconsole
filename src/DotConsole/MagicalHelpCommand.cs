@@ -14,13 +14,18 @@ namespace DotConsole
     /// known commands in the <see cref="ICommandLocator"/>
     /// and inspecting the parameters.
     /// </summary>
-    [Command(HelpCommandName, IsDefault = true)]
-    public class MagicalHelpCommand : HelpCommand
+    [Command("help")]
+    public class MagicalHelpCommand : ICommand
     {
         private const int IndentWidth = 1;
         private const int TabWidth = 3;
+        private const string ArgFlagPrefix = "-";
+        private const string ArgNamePrefix = "--";
 
         private static readonly string ExecutableName;
+
+        public IEnumerable<string> ErrorMessages { get; set; }
+        public ICommandLocator CommandLocator { get; set; }
 
         static MagicalHelpCommand()
         {
@@ -30,7 +35,7 @@ namespace DotConsole
         [Parameter(0)]
         public string CommandName { get; set; }
 
-        public override void Execute()
+        public void Execute()
         {
             if (CommandLocator == null)
             {
@@ -57,9 +62,15 @@ namespace DotConsole
                 }
             }
 
+            if (!string.IsNullOrWhiteSpace(Commander.ApplicationName))
+            {
+                Console.WriteLine(Commander.ApplicationName);
+                Console.WriteLine();
+            }
+
             if (command != null)
             {
-                WriteCommandHelp(command);
+                WriteCommandHelp(command, commandMeta);
             }
             else
             {
@@ -67,34 +78,74 @@ namespace DotConsole
             }
         }
 
-        private void WriteCommandList()
+        /// <summary>
+        /// Writes out a list of all available commands and their descriptions.
+        /// </summary>
+        public void WriteCommandList()
         {
             Console.WriteLine("list of commands:");
             Console.WriteLine();
 
-            var commands = CommandLocator.GetAllCommands()
-                .OrderBy(x => x.Value.Name);
-            foreach (var cmd in commands)
+            var commands = CommandLocator.GetAllCommands();
+            int maxCommandNameLength = commands.Values.Max(x => x.Name.Length);
+
+            foreach (var cmd in commands.OrderBy(x => x.Value.Name))
             {
-                Console.WriteLine("{0}{1}{2}{3}", new string(' ', IndentWidth), cmd.Value.Name,
-                    new string(' ', TabWidth), cmd.Key.GetDescription());
+                Console.Write(new string(' ', IndentWidth));
+                Console.Write(cmd.Value.Name);
+
+                var desc = cmd.Key.GetDescription();
+                if (!string.IsNullOrWhiteSpace(desc))
+                {
+                    Console.Write(new string(' ', maxCommandNameLength - cmd.Value.Name.Length));
+                    Console.Write(new string(' ', TabWidth));
+                    Console.Write(desc);
+                }
+                Console.WriteLine();
             }
         }
 
         /// <summary>
-        /// Returns True/False whether the given property is optional.
+        /// Writes out the help and usage information for the given <see cref="ICommand" />.
         /// </summary>
-        private static bool IsOptional(ICustomAttributeProvider property)
+        public void WriteCommandHelp(ICommand command, ICommandMetadata metadata)
         {
-            bool optional = property.GetCustomAttributes(typeof(RequiredAttribute), false)
-                                .Count() == 0;
-            return optional;
+            if (command == null)
+                throw new ArgumentNullException("command");
+            if (metadata == null)
+                throw new ArgumentNullException("metadata");
+
+            var argSyntax = GetArgumentSyntax(command);
+
+            Console.Write("{0} {1}", ExecutableName, metadata.Name);
+            if (!string.IsNullOrWhiteSpace(argSyntax))
+            {
+                Console.WriteLine(argSyntax);
+            }
+
+            var cmdDesc = command.GetDescription();
+            if (!string.IsNullOrWhiteSpace(cmdDesc))
+            {
+                Console.WriteLine();
+                Console.WriteLine(cmdDesc);
+            }
+
+            var parameters = command.GetParameters();
+            if (parameters.Count > 0)
+            {
+                Console.WriteLine();
+                Console.WriteLine("options:");
+                foreach (var param in parameters)
+                {
+                    // todo: write out the param info
+                }
+            }
         }
 
         /// <summary>
-        /// Writes out the argument syntax for the given <see cref="ICommand" />.
+        /// Builds and returns the argument syntax for the given <see cref="ICommand" />.
         /// </summary>
-        public void WriteArgumentSyntax(ICommand command)
+        public string GetArgumentSyntax(ICommand command)
         {
             //  SAMPLE OUTPUT
             //
@@ -107,7 +158,7 @@ namespace DotConsole
             int count = 0;
             foreach (var prop in properties)
             {
-                bool optional = IsOptional(prop.Key);
+                bool optional = !prop.Key.IsRequired();
                 if (optional)
                 {
                     syntax.Append("[");
@@ -132,97 +183,7 @@ namespace DotConsole
                 count++;
             }
 
-            Console.Write(syntax.ToString());
-        }
-
-        private static string GetParameterDescription(PropertyInfo property)
-        {
-            var desc = property.GetCustomAttributes(typeof(DescriptionAttribute), true)
-                .Cast<DescriptionAttribute>()
-                .Select(x => x.Description)
-                .FirstOrDefault();
-
-            return desc;
-        }
-
-        /// <summary>
-        /// Writes out the list of arguments for the given <see cref="ICommand" />.
-        /// </summary>
-        public void WriteArgumentList(ICommand command)
-        {
-            //  SAMPLE OUTPUT
-            //
-            //  Options:
-            //    -f, -firstArg       description of first argument
-            //    -s, -secondArg      description of second argument
-
-            Console.WriteLine(string.Empty);
-            Console.WriteLine("Options:");
-
-            var properties = command.GetParameters();
-
-            int maxArgNameLength = properties.Max(x => /*x.Value.ShortName.Length*/ 0 + x.Value.Name.Length) + 4;
-
-            foreach (var prop in properties)
-            {
-                Console.Write("".PadLeft(IndentWidth));
-                Console.Write(string.Format("-{0}, --{1}", /*prop.Value.ShortName*/ "X", prop.Value.Name).PadRight(maxArgNameLength + TabWidth));
-                Console.WriteLine(GetParameterDescription(prop.Key));
-            }
-        }
-
-        /// <summary>
-        /// Writes out the help verbiage for the given  <see cref="ICommand" />.
-        /// </summary>
-        public void WriteCommandHelp(ICommand command)
-        {
-            //  SAMPLE OUTPUT
-            //
-            //  Usage: db.exe commandName [ARGUMENT SYNTAX]
-            //  
-            //  Options:
-            //    -f, -firstArg       description of first argument
-            //    -s, -secondArg      description of second argument       
-
-            var metadata = CommandLocator.GetCommandMetadata(command);
-
-            Console.Write("Usage: ");
-            Console.Write(ExecutableName);
-            Console.Write(" ");
-            Console.Write(metadata.Name);
-            Console.Write(" ");
-
-            WriteArgumentSyntax(command);
-
-            Console.WriteLine(string.Empty);
-            WriteArgumentList(command);
-        }
-
-        /// <summary>
-        /// Writes out a list of the given <see cref="ICommand" /> names and descriptions.
-        /// </summary>
-        public void WriteCommandList(IEnumerable<ICommand> commands)
-        {
-            //  SAMPLE OUTPUT
-            //
-            //  Commands:
-            //    firstCommand        description of first command
-            //    secondCommand       description of second command
-
-            Console.WriteLine(string.Empty);
-            Console.WriteLine("Available commands:");
-
-            var metadata = commands.ToDictionary(cmd => cmd, cmd => CommandLocator.GetCommandMetadata(cmd));
-
-            int maxCommandNameLength = metadata.Values.Max(x => x.Name.Length);
-
-            foreach (ICommand cmd in metadata.Keys)
-            {
-                var cmdMetadata = metadata[cmd];
-                Console.Write("".PadLeft(2));
-                Console.Write("{0}", cmdMetadata.Name.PadRight(maxCommandNameLength + TabWidth));
-                Console.WriteLine(cmd.GetDescription());
-            }
+            return syntax.ToString();
         }
     }
 }

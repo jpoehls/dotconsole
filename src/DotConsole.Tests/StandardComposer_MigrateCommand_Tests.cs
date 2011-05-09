@@ -1,4 +1,4 @@
-﻿using DotConsole.Tests.Commands;
+﻿using DotConsole.Tests.StubCommands;
 using NUnit.Framework;
 
 namespace DotConsole.Tests
@@ -7,13 +7,13 @@ namespace DotConsole.Tests
     public class StandardComposer_MigrateCommand_Tests
     {
         private StandardComposer _composer;
-        private MigrateCommand _command;
+        private TestMigrateCommand _command;
 
         [SetUp]
         public void Setup()
         {
             _composer = new StandardComposer();
-            _command = new MigrateCommand();
+            _command = new TestMigrateCommand();
         }
 
         [TestCase("/c", "some connection", Description = "Flag used")]

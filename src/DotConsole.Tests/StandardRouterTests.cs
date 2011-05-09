@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using DotConsole.Tests.Commands;
+using DotConsole.Tests.StubCommands;
 using NUnit.Framework;
 
 namespace DotConsole.Tests
@@ -74,7 +74,7 @@ namespace DotConsole.Tests
         public void Route_should_return_command_with_a_name_matching_the_first_arg()
         {
             // arrange
-            var testArgs = new[] { "help" };
+            var testArgs = new[] { "testhelp" };
 
             // act
             var command = _router.Route(testArgs);
