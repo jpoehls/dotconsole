@@ -15,6 +15,8 @@ namespace DotConsole
     {
         private readonly ICommandRouter _router;
         private readonly ICommandValidator _validator;
+        private readonly ICommandComposer _composer;
+        private readonly ICommandLocator _locator;
 
         /// <summary>
         /// Get/sets the name of the application as it should
@@ -22,7 +24,10 @@ namespace DotConsole
         /// </summary>
         public static string ApplicationName { get; set; }
 
-        public ICommandRouter Router { get { return _router; } }
+        /// <summary>
+        /// Gets the <see cref="ICommandLocator"/> used to find <see cref="ICommand"/> types.
+        /// </summary>
+        public ICommandLocator Locator { get { return _locator; } }
 
         /// <summary>
         /// Gets a <see cref="Commander" /> that works with
@@ -61,15 +66,17 @@ namespace DotConsole
         {
             var locator = new MefCommandLocator(catalogs);
             var composer = new StandardComposer();
-            var router = new StandardRouter(locator, composer);
+            var router = new StandardRouter(locator);
             var validator = new DataAnnotationValidator();
-            return new Commander(router, validator);
+            return new Commander(router, validator, composer, locator);
         }
 
-        public Commander(ICommandRouter router, ICommandValidator validator)
+        public Commander(ICommandRouter router, ICommandValidator validator, ICommandComposer composer, ICommandLocator locator)
         {
             _router = router;
             _validator = validator;
+            _composer = composer;
+            _locator = locator;
         }
 
         /// <summary>
@@ -94,12 +101,16 @@ namespace DotConsole
 
             if (command != null)
             {
+                // Note that we are skipping the first arg since
+                // it contains the command name (not an actual argument).
+                _composer.ComposeParameters(command, args.Skip(1));
+
                 if (!_validator.ValidateParameters(command))
                 {
                     // get the help command from the router so that
                     // we will use any custom help command the user has added
                     var helpCommand = new MagicalHelpCommand();
-                    helpCommand.CommandLocator = _router.Locator;
+                    helpCommand.CommandLocator = _locator;
                     helpCommand.ErrorMessages = _validator.ErrorMessages;
 
                     command = helpCommand;
@@ -111,7 +122,7 @@ namespace DotConsole
             {
                 // execute the help command if we no other command was found
                 var helpCommand = new MagicalHelpCommand();
-                helpCommand.CommandLocator = _router.Locator;
+                helpCommand.CommandLocator = _locator;
 
                 string commandName = _router.GetCommandName(args);
 
