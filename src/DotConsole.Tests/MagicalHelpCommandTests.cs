@@ -14,8 +14,8 @@ namespace DotConsole.Tests
         {
             _expectedExecutableName = Path.GetFileNameWithoutExtension(Environment.GetCommandLineArgs()[0]);
 
-            _help = new MagicalHelpCommand();
-            _help.CommandLocator = new MefCommandLocator(new AssemblyCatalog(Assembly.GetExecutingAssembly()));
+            var locator = new MefCommandLocator(new AssemblyCatalog(Assembly.GetExecutingAssembly()));
+            _help = new MagicalHelpCommand(locator);
         }
 
         private MagicalHelpCommand _help;
@@ -152,17 +152,15 @@ namespace DotConsole.Tests
         }
 
         [Test]
-        public void Execute_should_throw_exception_if_CommandLocator_property_is_null()
+        public void Constructor_should_throw_exception_if_CommandLocator_argument_is_null()
         {
             // arrange
-            _help.CommandLocator = null;
 
             // act
-            var ex = Assert.Throws<InvalidOperationException>(() => _help.Execute(), "No exception was thrown.");
+            var ex = Assert.Throws<ArgumentNullException>(() => new MagicalHelpCommand(null), "No exception was thrown.");
 
             // assert
-            Assert.IsTrue(ex.Message.Contains("CommandLocator property"),
-                          "The error message didn't mention the CommandLocator property.");
+            Assert.AreEqual(ex.ParamName, "locator");
         }
     }
 }

@@ -18,7 +18,7 @@ namespace DotConsole
 
         // ReSharper disable UnusedAutoPropertyAccessor.Local
         // MEF uses the private setter
-        [ImportMany(typeof(ICommand))]
+        [ImportMany(typeof(ICommand), AllowRecomposition = true)]
         protected IList<Lazy<ICommand, ICommandMetadata>> Commands { get; private set; }
         // ReSharper restore UnusedAutoPropertyAccessor.Local
 
@@ -44,11 +44,17 @@ namespace DotConsole
                 }
             }
 
-            // always include our built-in help command
-            _catalog.Catalogs.Add(new TypeCatalog(typeof(MagicalHelpCommand)));
-
             _container = new CompositionContainer(_catalog);
+
+            // register ICommandLocator so that commands can take a dependency on it
+            _container.ComposeExportedValue<ICommandLocator>(this);
             _container.ComposeParts(this);
+        }
+
+        public void RegisterCommand<TCommand>()
+            where TCommand : ICommand
+        {
+            _catalog.Catalogs.Add(new TypeCatalog(typeof(TCommand)));
         }
 
         public virtual ICommand GetCommandByName(string commandName)

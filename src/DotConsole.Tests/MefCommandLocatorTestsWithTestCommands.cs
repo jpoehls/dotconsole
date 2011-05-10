@@ -16,11 +16,12 @@ namespace DotConsole.Tests
             _locator = new MefCommandLocator(new AssemblyCatalog(Assembly.GetExecutingAssembly()));
         }
 
-        public void GetCommand_should_return_TestHelpCommand(string commandName)
+        [Test]
+        public void GetCommand_should_return_TestHelpCommand()
         {
             // arrange
             // act
-            var command = _locator.GetCommandByName("help");
+            var command = _locator.GetCommandByName("testhelp");
 
             // assert
             Assert.IsInstanceOf<TestHelpCommand>(command);

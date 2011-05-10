@@ -57,7 +57,7 @@
     <Compile Include="StubCommands\TestHelpCommand.cs" />
     <Compile Include="DataAnnotationValidatorTests.cs" />
     <Compile Include="MagicalHelpCommandTests.cs" />
-    <Compile Include="MefCommandLocatorTestsWithBuiltinCommands.cs" />
+    <Compile Include="MefCommandLocatorTests.cs" />
     <Compile Include="MefCommandLocatorTestsWithTestCommands.cs" />
     <Compile Include="StandardComposer_MigrateCommand_Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

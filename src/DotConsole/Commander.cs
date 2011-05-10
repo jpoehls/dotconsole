@@ -13,10 +13,20 @@ namespace DotConsole
     /// </summary>
     public class Commander
     {
-        private readonly ICommandRouter _router;
-        private readonly ICommandValidator _validator;
         private readonly ICommandComposer _composer;
         private readonly ICommandLocator _locator;
+        private readonly ICommandRouter _router;
+        private readonly ICommandValidator _validator;
+        private bool _builtinCommandsRegistered;
+
+        public Commander(ICommandRouter router, ICommandValidator validator, ICommandComposer composer,
+                         ICommandLocator locator)
+        {
+            _router = router;
+            _validator = validator;
+            _composer = composer;
+            _locator = locator;
+        }
 
         /// <summary>
         /// Get/sets the name of the application as it should
@@ -27,7 +37,10 @@ namespace DotConsole
         /// <summary>
         /// Gets the <see cref="ICommandLocator"/> used to find <see cref="ICommand"/> types.
         /// </summary>
-        public ICommandLocator Locator { get { return _locator; } }
+        public ICommandLocator Locator
+        {
+            get { return _locator; }
+        }
 
         /// <summary>
         /// Gets a <see cref="Commander" /> that works with
@@ -53,7 +66,7 @@ namespace DotConsole
                 catalogs.AddRange(commandAssemblies.Select(assembly => new AssemblyCatalog(assembly)));
             }
 
-            return Commander.Standard(catalogs.ToArray());
+            return Standard(catalogs.ToArray());
         }
 
         /// <summary>
@@ -69,14 +82,6 @@ namespace DotConsole
             var router = new StandardRouter(locator);
             var validator = new DataAnnotationValidator();
             return new Commander(router, validator, composer, locator);
-        }
-
-        public Commander(ICommandRouter router, ICommandValidator validator, ICommandComposer composer, ICommandLocator locator)
-        {
-            _router = router;
-            _validator = validator;
-            _composer = composer;
-            _locator = locator;
         }
 
         /// <summary>
@@ -97,7 +102,10 @@ namespace DotConsole
         /// <param name="args">Arguments to use to route and execute the command.</param>
         public virtual void Run(IEnumerable<string> args)
         {
-            var command = _router.Route(args);
+            // register the built-in commands with the locator
+            RegisterBuiltinCommands();
+
+            ICommand command = _router.Route(args);
 
             if (command != null)
             {
@@ -109,8 +117,7 @@ namespace DotConsole
                 {
                     // get the help command from the router so that
                     // we will use any custom help command the user has added
-                    var helpCommand = new MagicalHelpCommand();
-                    helpCommand.CommandLocator = _locator;
+                    var helpCommand = (IHelpCommand) _locator.GetCommandByName(ReservedCommandNames.Help);
                     helpCommand.ErrorMessages = _validator.ErrorMessages;
 
                     command = helpCommand;
@@ -121,17 +128,25 @@ namespace DotConsole
             else
             {
                 // execute the help command if we no other command was found
-                var helpCommand = new MagicalHelpCommand();
-                helpCommand.CommandLocator = _locator;
+                var helpCommand = (IHelpCommand) _locator.GetCommandByName(ReservedCommandNames.Help);
 
                 string commandName = _router.GetCommandName(args);
 
                 if (!string.IsNullOrWhiteSpace(commandName))
                 {
-                    helpCommand.ErrorMessages = new[] { "unknown command '" + commandName + "'" };
+                    helpCommand.ErrorMessages = new[] {"unknown command '" + commandName + "'"};
                 }
 
                 helpCommand.Execute();
+            }
+        }
+
+        private void RegisterBuiltinCommands()
+        {
+            if (!_builtinCommandsRegistered)
+            {
+                _locator.RegisterCommand<MagicalHelpCommand>();
+                _builtinCommandsRegistered = true;
             }
         }
     }

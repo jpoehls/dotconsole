@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Composition;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
@@ -14,9 +15,11 @@ namespace DotConsole
     /// known commands in the <see cref="ICommandLocator"/>
     /// and inspecting the parameters.
     /// </summary>
-    [Command("help")]
-    public class MagicalHelpCommand : ICommand
+    [Command(ReservedCommandNames.Help)]
+    [Description("Show help for a given command or a help overview.")]
+    public class MagicalHelpCommand : IHelpCommand
     {
+        private readonly ICommandLocator _locator;
         private const int IndentWidth = 1;
         private const int TabWidth = 3;
         private const string ArgFlagPrefix = "-";
@@ -25,11 +28,19 @@ namespace DotConsole
         private static readonly string ExecutableName;
 
         public IEnumerable<string> ErrorMessages { get; set; }
-        public ICommandLocator CommandLocator { get; set; }
 
         static MagicalHelpCommand()
         {
             ExecutableName = Path.GetFileNameWithoutExtension(Environment.GetCommandLineArgs()[0]);
+        }
+
+        [ImportingConstructor]
+        public MagicalHelpCommand(ICommandLocator locator)
+        {
+            if (locator == null)
+                throw new ArgumentNullException("locator");
+
+            _locator = locator;
         }
 
         /// <summary>
@@ -40,15 +51,9 @@ namespace DotConsole
 
         public void Execute()
         {
-            if (CommandLocator == null)
-            {
-                throw new InvalidOperationException(
-                    "CommandLocator property is null. Help command requires a non-null CommandLocator instance.");
-            }
-
-            ICommand command = CommandLocator.GetCommandByName(CommandName);
+            ICommand command = _locator.GetCommandByName(CommandName);
             ICommandMetadata commandMeta = (command != null)
-                ? CommandLocator.GetCommandMetadata(command)
+                ? _locator.GetCommandMetadata(command)
                 : null;
 
             if (ErrorMessages != null)
@@ -89,7 +94,7 @@ namespace DotConsole
             Console.WriteLine("list of commands:");
             Console.WriteLine();
 
-            var commands = CommandLocator.GetAllCommands();
+            var commands = _locator.GetAllCommands();
             int maxCommandNameLength = commands.Values.Max(x => x.Name.Length);
 
             foreach (var cmd in commands.OrderBy(x => x.Value.Name))

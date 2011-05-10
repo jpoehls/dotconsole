@@ -53,12 +53,14 @@
     <Compile Include="Commander.cs" />
     <Compile Include="CommandHelpers.cs" />
     <Compile Include="DataAnnotationValidator.cs" />
+    <Compile Include="Interfaces\IHelpCommand.cs" />
     <Compile Include="MagicalHelpCommand.cs" />
     <Compile Include="Interfaces\ICommandLocator.cs" />
     <Compile Include="Interfaces\ICommandMetadata.cs" />
     <Compile Include="Interfaces\ICommandValidator.cs" />
     <Compile Include="MefCommandLocator.cs" />
     <Compile Include="ParameterHelpers.cs" />
+    <Compile Include="ReservedCommandNames.cs" />
     <Compile Include="StandardComposer.cs" />
     <Compile Include="StandardRouter.cs" />
     <Compile Include="Interfaces\ICommandComposer.cs" />
