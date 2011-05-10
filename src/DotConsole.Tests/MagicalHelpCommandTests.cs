@@ -2,6 +2,7 @@
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Reflection;
+using DotConsole.Commands;
 using NUnit.Framework;
 
 namespace DotConsole.Tests

@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
-using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
+using DotConsole.Helpers;
 
-namespace DotConsole
+namespace DotConsole.Commands
 {
     /// <summary>
     /// Generates help output by introspecting over all
@@ -17,7 +16,7 @@ namespace DotConsole
     /// </summary>
     [Command(ReservedCommandNames.Help)]
     [Description("Show help for a given command or a help overview.")]
-    public class MagicalHelpCommand : IHelpCommand
+    internal class MagicalHelpCommand : IHelpCommand
     {
         private readonly ICommandLocator _locator;
         private const int IndentWidth = 1;

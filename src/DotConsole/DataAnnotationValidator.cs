@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
+using DotConsole.Helpers;
 
 namespace DotConsole
 {

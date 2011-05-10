@@ -5,9 +5,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
-namespace DotConsole
+namespace DotConsole.Helpers
 {
-    public static class CommandHelpers
+    internal static class CommandHelpers
     {
         public static void SetParameterValue(this ICommand command, PropertyInfo parameterProperty, string value)
         {

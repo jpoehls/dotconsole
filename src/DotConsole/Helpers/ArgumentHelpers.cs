@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace DotConsole
+namespace DotConsole.Helpers
 {
-    public static class ArgumentHelpers
+    internal static class ArgumentHelpers
     {
         public static IEnumerable<string> GetNamedArgValues(this IEnumerable<string> args, IEnumerable<string> possibleNames)
         {

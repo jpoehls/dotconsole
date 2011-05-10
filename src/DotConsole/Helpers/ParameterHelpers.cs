@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 
-namespace DotConsole
+namespace DotConsole.Helpers
 {
-    public static class ParameterHelpers
+    internal static class ParameterHelpers
     {
         public static string GetDescription(this PropertyInfo property)
         {

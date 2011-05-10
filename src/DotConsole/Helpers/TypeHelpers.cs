@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace DotConsole
+namespace DotConsole.Helpers
 {
-    public static class TypeHelpers
+    internal static class TypeHelpers
     {
         public static object GetDefaultValue(this Type type)
         {

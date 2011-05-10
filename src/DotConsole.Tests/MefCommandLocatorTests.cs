@@ -1,3 +1,4 @@
+using DotConsole.Commands;
 using NUnit.Framework;
 
 namespace DotConsole.Tests
