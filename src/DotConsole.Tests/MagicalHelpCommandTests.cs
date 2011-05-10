@@ -92,7 +92,6 @@ namespace DotConsole.Tests
             // arrange
             string expectedOutput = "list of commands:" + Environment.NewLine +
                                     Environment.NewLine +
-                                    " help" + Environment.NewLine +
                                     " testhelp" + Environment.NewLine +
                                     " testmigrate" + Environment.NewLine;
 
@@ -139,7 +138,6 @@ namespace DotConsole.Tests
             // arrange
             string expectedOutput = "list of commands:" + Environment.NewLine +
                                     Environment.NewLine +
-                                    " help" + Environment.NewLine +
                                     " testhelp" + Environment.NewLine +
                                     " testmigrate" + Environment.NewLine;
 

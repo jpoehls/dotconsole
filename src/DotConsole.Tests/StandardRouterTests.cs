@@ -43,20 +43,6 @@ namespace DotConsole.Tests
         }
 
         [Test]
-        public void Route_should_return_command_with_a_name_matching_the_first_arg2()
-        {
-            // arrange
-            var testArgs = new[] { "?" };
-
-            // act
-            var command = _router.Route(testArgs);
-
-            // assert
-            Assert.IsNotNull(command, "command is null - routing failed");
-            Assert.IsInstanceOf(typeof(TestHelpCommand), command, "wrong command returned");
-        }
-
-        [Test]
         public void Route_should_return_null_if_no_command_is_found_and_there_is_no_default()
         {
             // arrange
