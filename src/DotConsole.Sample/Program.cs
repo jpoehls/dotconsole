@@ -6,7 +6,7 @@ namespace DotConsole.Sample
     {
         private static void Main(string[] args)
         {
-            var commander = Commander.Standard();
+            var commander = new Commander();
             commander.Run();
             Console.ReadLine();
         }

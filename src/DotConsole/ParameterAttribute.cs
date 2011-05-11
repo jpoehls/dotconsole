@@ -12,7 +12,7 @@ namespace DotConsole
     /// a name, a flag, or a position.
     /// </remarks>
     [AttributeUsage(AttributeTargets.Property)]
-    public class ParameterAttribute : Attribute
+    public sealed class ParameterAttribute : Attribute
     {
         private string _metaName;
 

@@ -1,19 +1,18 @@
-﻿using System;
-using System.Linq;
+﻿using DotConsole.Routing;
 using DotConsole.Tests.StubCommands;
 using NUnit.Framework;
 
-namespace DotConsole.Tests
+namespace DotConsole.Tests.Routing
 {
     [TestFixture]
-    public class StandardRouterTests
+    public class FirstArgumentRouterTests
     {
-        private StandardRouter _router;
+        private FirstArgumentRouter _router;
 
         [SetUp]
         public void Setup()
         {
-            _router = new StandardRouter(new MefCommandLocator());
+            _router = new FirstArgumentRouter(new MefCommandLocator());
         }
 
         [Test]
@@ -32,6 +31,7 @@ namespace DotConsole.Tests
         public void Route_should_return_command_with_a_name_matching_the_first_arg()
         {
             // arrange
+            _router.Locator.RegisterCommand<TestHelpCommand>();
             var testArgs = new[] { "testhelp" };
 
             // act

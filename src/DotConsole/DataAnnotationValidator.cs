@@ -12,6 +12,8 @@ namespace DotConsole
     /// </summary>
     public class DataAnnotationValidator : ICommandValidator
     {
+        protected const string DefaultErrorMessage = "validation failed";
+
         private readonly List<string> _errors;
 
         public DataAnnotationValidator()
@@ -25,6 +27,8 @@ namespace DotConsole
         {
             _errors.Clear();
 
+            bool valid = true;
+
             var parameters = command.GetParameters();
 
             foreach (PropertyInfo prop in parameters.Keys)
@@ -37,12 +41,23 @@ namespace DotConsole
                 {
                     if (!attr.IsValid(prop.GetValue(command, null)))
                     {
-                        _errors.Add(attr.ErrorMessage);
+                        valid = false;
+                        if (!string.IsNullOrWhiteSpace(attr.ErrorMessage))
+                        {
+                            _errors.Add(attr.ErrorMessage);
+                        }
                     }
                 }
             }
 
-            return _errors.Count == 0;
+            // add a default error message if validation failed
+            // and no specific error messages were provided
+            if (!valid && _errors.Count == 0)
+            {
+                _errors.Add(DefaultErrorMessage);
+            }
+
+            return valid;
         }
     }
 }

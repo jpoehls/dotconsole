@@ -2,7 +2,7 @@
 
 namespace DotConsole
 {
-    public interface ICommandRouter
+    internal interface ICommandRouter
     {
         ICommand Route(IEnumerable<string> args);
         string GetCommandName(IEnumerable<string> args);

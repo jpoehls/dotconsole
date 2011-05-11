@@ -58,11 +58,11 @@
     <Compile Include="Interfaces\ICommandLocator.cs" />
     <Compile Include="Interfaces\ICommandMetadata.cs" />
     <Compile Include="Interfaces\ICommandValidator.cs" />
-    <Compile Include="MefCommandLocator.cs" />
+    <Compile Include="Routing\MefCommandLocator.cs" />
     <Compile Include="Helpers\ParameterHelpers.cs" />
     <Compile Include="ReservedCommandNames.cs" />
     <Compile Include="StandardComposer.cs" />
-    <Compile Include="StandardRouter.cs" />
+    <Compile Include="Routing\FirstArgumentRouter.cs" />
     <Compile Include="Interfaces\ICommandComposer.cs" />
     <Compile Include="Interfaces\ICommandRouter.cs" />
     <Compile Include="ParameterAttribute.cs" />

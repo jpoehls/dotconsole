@@ -4,14 +4,13 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 using System.Linq;
-using System.Reflection;
 
-namespace DotConsole
+namespace DotConsole.Routing
 {
     /// <summary>
     /// Uses MEF to locate <see cref="ICommand"/> types in the application.
     /// </summary>
-    public class MefCommandLocator : ICommandLocator
+    internal class MefCommandLocator : ICommandLocator
     {
         private readonly AggregateCatalog _catalog;
         private readonly CompositionContainer _container;
@@ -27,11 +26,26 @@ namespace DotConsole
             get { return _catalog; }
         }
 
+        /// <summary>
+        /// Initializes a <see cref="MefCommandLocator"/> with no catalogs.
+        /// </summary>
         public MefCommandLocator()
-            : this(new AssemblyCatalog(Assembly.GetCallingAssembly()))
+            : this(Enumerable.Empty<ComposablePartCatalog>())
         { }
 
-        public MefCommandLocator(params ComposablePartCatalog[] catalogs)
+        /// <summary>
+        /// Initializes a <see cref="MefCommandLocator"/> with the given catalog.
+        /// </summary>
+        /// <param name="catalog"></param>
+        public MefCommandLocator(ComposablePartCatalog catalog)
+            : this(new[] { catalog })
+        { }
+
+        /// <summary>
+        /// Initializes a <see cref="MefCommandLocator"/> with the given list of catalogs.
+        /// </summary>
+        /// <param name="catalogs"></param>
+        public MefCommandLocator(IEnumerable<ComposablePartCatalog> catalogs)
         {
             Commands = new List<Lazy<ICommand, ICommandMetadata>>();
             _catalog = new AggregateCatalog();
@@ -40,7 +54,10 @@ namespace DotConsole
             {
                 foreach (var catalog in catalogs)
                 {
-                    _catalog.Catalogs.Add(catalog);
+                    if (catalog != null)
+                    {
+                        _catalog.Catalogs.Add(catalog);
+                    }
                 }
             }
 

@@ -53,16 +53,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="StubCommands\GenericCatchAllCommand.cs" />
+    <Compile Include="StubCommands\ParameterValueTypeTestCommand.cs" />
     <Compile Include="StubCommands\TestMigrateCommand.cs" />
     <Compile Include="StubCommands\TestHelpCommand.cs" />
     <Compile Include="DataAnnotationValidatorTests.cs" />
     <Compile Include="MagicalHelpCommandTests.cs" />
-    <Compile Include="MefCommandLocatorTests.cs" />
-    <Compile Include="MefCommandLocatorTestsWithTestCommands.cs" />
+    <Compile Include="Routing\MefCommandLocatorTests.cs" />
+    <Compile Include="Routing\MefCommandLocatorTestsWithTestCommands.cs" />
     <Compile Include="StandardComposer_MigrateCommand_Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StandardComposer_TestHelpCommand_Tests.cs" />
-    <Compile Include="StandardRouterTests.cs" />
+    <Compile Include="Routing\FirstArgumentRouterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DotConsole\DotConsole.csproj">

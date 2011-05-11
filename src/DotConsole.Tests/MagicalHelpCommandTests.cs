@@ -3,6 +3,7 @@ using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Reflection;
 using DotConsole.Commands;
+using DotConsole.Routing;
 using NUnit.Framework;
 
 namespace DotConsole.Tests
@@ -15,10 +16,11 @@ namespace DotConsole.Tests
         {
             _expectedExecutableName = Path.GetFileNameWithoutExtension(Environment.GetCommandLineArgs()[0]);
 
-            var locator = new MefCommandLocator(new AssemblyCatalog(Assembly.GetExecutingAssembly()));
-            _help = new MagicalHelpCommand(locator);
+            _locator = new MefCommandLocator(new AssemblyCatalog(Assembly.GetExecutingAssembly()));
+            _help = new MagicalHelpCommand(_locator);
         }
 
+        private ICommandLocator _locator;
         private MagicalHelpCommand _help;
         private string _expectedExecutableName;
 
@@ -130,8 +132,7 @@ namespace DotConsole.Tests
             // assert
             Assert.AreEqual(expectedOutput, output.StdErr);
         }
-
-
+        
         [Test]
         public void Execute_should_output_list_of_commands_when_there_are_error_messages()
         {
@@ -142,6 +143,24 @@ namespace DotConsole.Tests
                                     " testmigrate" + Environment.NewLine;
 
             _help.ErrorMessages = new[] { "error message goes here" };
+
+            // act
+            var output = CaptureConsoleOutput(() => _help.Execute());
+
+            // assert
+            Assert.AreEqual(expectedOutput, output.StdOut);
+        }
+
+        [Test]
+        public void Execute_should_output_command_specific_help_when_CommandName_is_specified()
+        {
+            // arrange
+
+            // register the help command so we can test asking it for help about itself
+            _locator.RegisterCommand<MagicalHelpCommand>();
+
+            string expectedOutput = _expectedExecutableName + " help [COMMAND_NAME]";
+            _help.CommandName = "help";
 
             // act
             var output = CaptureConsoleOutput(() => _help.Execute());

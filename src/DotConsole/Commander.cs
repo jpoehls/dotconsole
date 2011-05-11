@@ -5,6 +5,7 @@ using System.ComponentModel.Composition.Primitives;
 using System.Linq;
 using System.Reflection;
 using DotConsole.Commands;
+using DotConsole.Routing;
 
 namespace DotConsole
 {
@@ -14,19 +15,60 @@ namespace DotConsole
     /// </summary>
     public class Commander
     {
-        private readonly ICommandComposer _composer;
         private readonly ICommandLocator _locator;
         private readonly ICommandRouter _router;
-        private readonly ICommandValidator _validator;
-        private bool _builtinCommandsRegistered;
+        private ICommandComposer _composer;
+        private ICommandValidator _validator;
 
-        public Commander(ICommandRouter router, ICommandValidator validator, ICommandComposer composer,
-                         ICommandLocator locator)
+        /// <summary>
+        /// Initializes a <see cref="Commander"/> that works with
+        /// commands in the calling assembly.
+        /// </summary>
+        public Commander()
+            : this(Assembly.GetCallingAssembly())
+        { }
+
+        /// <summary>
+        /// Gets a <see cref="Commander" /> that works with
+        /// commands in the given <see cref="Assembly"/>'s.
+        /// </summary>
+        /// <param name="commandAssemblies">Assemblies that contain your <see cref="ICommand" /> implementations</param>
+        public Commander(params Assembly[] commandAssemblies)
+            : this((IEnumerable<Assembly>)commandAssemblies)
+        { }
+
+        /// <summary>
+        /// Gets a <see cref="Commander" /> that works with
+        /// commands in the given <see cref="Assembly"/>'s.
+        /// </summary>
+        /// <param name="commandAssemblies">Assemblies that contain your <see cref="ICommand" /> implementations</param>
+        public Commander(IEnumerable<Assembly> commandAssemblies)
+            : this(commandAssemblies.Select(assembly => new AssemblyCatalog(assembly)))
+        { }
+
+        /// <summary>
+        /// Gets a <see cref="Commander" /> that works with
+        /// commands in the given <see cref="ComposablePartCatalog"/>'s.
+        /// </summary>
+        /// <param name="catalogs">Catalogs that contain your <see cref="ICommand" /> implementations</param>
+        public Commander(params ComposablePartCatalog[] catalogs)
+            : this((IEnumerable<ComposablePartCatalog>)catalogs)
+        { }
+
+        /// <summary>
+        /// Gets a <see cref="Commander" /> that works with
+        /// commands in the given <see cref="ComposablePartCatalog"/>'s.
+        /// </summary>
+        /// <param name="catalogs">Catalogs that contain your <see cref="ICommand" /> implementations</param>
+        public Commander(IEnumerable<ComposablePartCatalog> catalogs)
         {
-            _router = router;
-            _validator = validator;
-            _composer = composer;
-            _locator = locator;
+            _validator = new DataAnnotationValidator();
+            _composer = new StandardComposer();
+            _locator = new MefCommandLocator(catalogs);
+            _router = new FirstArgumentRouter(_locator);
+
+            // register the built-in commands with the locator
+            RegisterBuiltinCommands();
         }
 
         /// <summary>
@@ -44,45 +86,35 @@ namespace DotConsole
         }
 
         /// <summary>
-        /// Gets a <see cref="Commander" /> that works with
-        /// commands in the calling assembly.
+        /// Gets/sets the <see cref="ICommandValidator"/> used to validate the <see cref="ICommand"/>
+        /// parameters before the command is executed.
         /// </summary>
-        /// <returns></returns>
-        public static Commander Standard()
+        public ICommandValidator Validator
         {
-            return Standard(Assembly.GetCallingAssembly());
-        }
-
-        /// <summary>
-        /// Gets a <see cref="Commander" /> that works with
-        /// commands in the given assemblies.
-        /// </summary>
-        /// <param name="commandAssemblies">Assemblies that contain your <see cref="ICommand" /> implementations</param>
-        /// <returns></returns>
-        public static Commander Standard(params Assembly[] commandAssemblies)
-        {
-            var catalogs = new List<ComposablePartCatalog>();
-            if (commandAssemblies != null)
+            get { return _validator; }
+            set
             {
-                catalogs.AddRange(commandAssemblies.Select(assembly => new AssemblyCatalog(assembly)));
-            }
+                if (value == null)
+                    return;
 
-            return Standard(catalogs.ToArray());
+                _validator = value;
+            }
         }
 
         /// <summary>
-        /// Gets a <see cref="Commander" /> that works with
-        /// commands in the given catalogs.
+        /// Gets/sets the <see cref="ICommandComposer"/> used to populate the <see cref="ICommand"/>
+        /// parameters from a list of arguments (typically from the command line).
         /// </summary>
-        /// <param name="catalogs">Catalogs that contain your <see cref="ICommand" /> implementations</param>
-        /// <returns></returns>
-        public static Commander Standard(params ComposablePartCatalog[] catalogs)
+        public ICommandComposer Composer
         {
-            var locator = new MefCommandLocator(catalogs);
-            var composer = new StandardComposer();
-            var router = new StandardRouter(locator);
-            var validator = new DataAnnotationValidator();
-            return new Commander(router, validator, composer, locator);
+            get { return _composer; }
+            set
+            {
+                if (value == null)
+                    return;
+
+                _composer = value;
+            }
         }
 
         /// <summary>
@@ -103,9 +135,6 @@ namespace DotConsole
         /// <param name="args">Arguments to use to route and execute the command.</param>
         public virtual void Run(IEnumerable<string> args)
         {
-            // register the built-in commands with the locator
-            RegisterBuiltinCommands();
-
             ICommand command = _router.Route(args);
 
             if (command != null)
@@ -118,7 +147,7 @@ namespace DotConsole
                 {
                     // get the help command from the router so that
                     // we will use any custom help command the user has added
-                    var helpCommand = (IHelpCommand) _locator.GetCommandByName(ReservedCommandNames.Help);
+                    var helpCommand = (IHelpCommand)_locator.GetCommandByName(ReservedCommandNames.Help);
                     helpCommand.ErrorMessages = _validator.ErrorMessages;
 
                     command = helpCommand;
@@ -129,26 +158,25 @@ namespace DotConsole
             else
             {
                 // execute the help command if we no other command was found
-                var helpCommand = (IHelpCommand) _locator.GetCommandByName(ReservedCommandNames.Help);
+                var helpCommand = (IHelpCommand)_locator.GetCommandByName(ReservedCommandNames.Help);
 
                 string commandName = _router.GetCommandName(args);
 
                 if (!string.IsNullOrWhiteSpace(commandName))
                 {
-                    helpCommand.ErrorMessages = new[] {"unknown command '" + commandName + "'"};
+                    helpCommand.ErrorMessages = new[] { "unknown command '" + commandName + "'" };
                 }
 
                 helpCommand.Execute();
             }
         }
 
+        /// <summary>
+        /// Adds our built-in commands to the locator.
+        /// </summary>
         private void RegisterBuiltinCommands()
         {
-            if (!_builtinCommandsRegistered)
-            {
-                _locator.RegisterCommand<MagicalHelpCommand>();
-                _builtinCommandsRegistered = true;
-            }
+            _locator.RegisterCommand<MagicalHelpCommand>();
         }
     }
 }

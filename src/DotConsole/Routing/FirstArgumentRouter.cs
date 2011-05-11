@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace DotConsole
+namespace DotConsole.Routing
 {
     /// <summary>
-    /// Determines which <see cref="ICommand"/> should execute based
-    /// on a list of arguments (typically from the command line).
+    /// Finds and returns the <see cref="ICommand" />
+    /// whose name matches the first argument in a given list.
     /// </summary>
-    public class StandardRouter : ICommandRouter
+    internal class FirstArgumentRouter : ICommandRouter
     {
         private readonly ICommandLocator _locator;
 
@@ -17,7 +16,7 @@ namespace DotConsole
             get { return _locator; }
         }
 
-        public StandardRouter(ICommandLocator locator)
+        public FirstArgumentRouter(ICommandLocator locator)
         {
             _locator = locator;
         }

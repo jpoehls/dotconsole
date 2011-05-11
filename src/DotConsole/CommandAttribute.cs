@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
 
 namespace DotConsole
@@ -9,14 +10,21 @@ namespace DotConsole
     /// </summary>
     [MetadataAttribute]
     [AttributeUsage(AttributeTargets.Class)]
-    public class CommandAttribute : ExportAttribute, ICommandMetadata
+    public sealed class CommandAttribute : ExportAttribute, ICommandMetadata
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="CommandAttribute"/>
+        /// using the decorated class's name as the command name.
+        /// </summary>
+        public CommandAttribute()
+            : base(typeof(ICommand)) { }
+
         /// <summary>
         /// Initializes a new instance of <see cref="CommandAttribute"/>.
         /// </summary>
         /// <param name="name">Name of the command as it will be entered at the command line.</param>
         public CommandAttribute(string name)
-            : base(typeof(ICommand))
+            : this()
         {
             _name = name;
         }
@@ -24,7 +32,7 @@ namespace DotConsole
         private readonly string _name;
 
         /// <summary>
-        /// Gets/Sets the name of the command as it will be entered at the command line.
+        /// Gets the name of the command as it will be entered at the command line.
         /// </summary>
         public string Name { get { return _name; } }
     }

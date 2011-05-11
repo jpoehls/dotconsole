@@ -45,7 +45,7 @@ namespace DotConsole.Commands
         /// <summary>
         /// Gets/sets the name of the command to display help information for.
         /// </summary>
-        [Parameter(0)]
+        [Parameter("command", MetaName = "command_name", Position = 0)]
         public string CommandName { get; set; }
 
         public void Execute()
@@ -172,9 +172,9 @@ namespace DotConsole.Commands
                 }
 
                 syntax.Append("--");
-                syntax.Append(prop.Value);
+                syntax.Append(prop.Value.Name);
                 syntax.Append(" ");
-                syntax.Append(prop.Value.MetaName.ToUpperInvariant());
+                syntax.Append(prop.Value.MetaName);
 
                 if (optional)
                 {

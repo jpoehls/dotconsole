@@ -1,7 +1,8 @@
 using DotConsole.Commands;
+using DotConsole.Routing;
 using NUnit.Framework;
 
-namespace DotConsole.Tests
+namespace DotConsole.Tests.Routing
 {
     [TestFixture]
     public class MefCommandLocatorTests
@@ -11,7 +12,7 @@ namespace DotConsole.Tests
         [SetUp]
         public void Setup()
         {
-            _locator = new MefCommandLocator(null);
+            _locator = new MefCommandLocator();
         }
 
         [Test]

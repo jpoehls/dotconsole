@@ -1,9 +1,10 @@
 using System.ComponentModel.Composition.Hosting;
 using System.Reflection;
+using DotConsole.Routing;
 using DotConsole.Tests.StubCommands;
 using NUnit.Framework;
 
-namespace DotConsole.Tests
+namespace DotConsole.Tests.Routing
 {
     [TestFixture]
     public class MefCommandLocatorTestsWithTestCommands
