@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -62,6 +63,65 @@ prog -v --report /tmp/report.txt foo bar
      * /tmp/report.txt is an option argument.
      * foo and bar are positional arguments.
 */
+
+    public class Arg
+    {
+        public Arg()
+        {
+            Values = new List<string>();
+            KeyedValues = new Dictionary<string, string>();
+        }
+
+        public string Name { get; set; }
+        public List<string> Values { get; set; }
+        public Dictionary<string, string> KeyedValues { get; set; }
+    }
+
+    public class ArgReader
+    {
+        public List<Arg> Args = new List<Arg>();
+        public List<string> UnnamedArgs = new List<string>();
+
+        public void Parse(IEnumerable<string> args)
+        {
+            bool inFlagArg = false;
+            bool inNamedArg = false;
+            Arg currentArg;
+            foreach (var a in args)
+            {
+                foreach (var l in a)
+                {
+                    if (!inNamedArg && !inFlagArg && l == '-')
+                    {
+                        inFlagArg = true;
+                    }
+                    else if (inFlagArg && !inNamedArg && l == '-')
+                    {
+                        inNamedArg = true;
+                    }
+                    else if (inFlagArg)
+                    {
+                        // todo add to flags array
+                    }
+                    else if (inNamedArg)
+                    {
+                        // 
+                    }
+                }
+            }
+        }
+    }
+
+    public class BlahTests
+    {
+
+
+        [Fact]
+        public void Test1()
+        {
+
+        }
+    }
 
     public class RegexArgParserTests
     {

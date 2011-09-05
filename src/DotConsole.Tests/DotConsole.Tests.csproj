@@ -65,6 +65,7 @@
     <Compile Include="Mocks\EmptyMockCommand.cs" />
     <Compile Include="RegexArgParser.cs" />
     <Compile Include="StaticRouterTests.cs" />
+    <Compile Include="v20\TrunkMonkey.cs" />
     <Compile Include="_Old\ArgumentAttributeUnitTests.cs" />
     <Compile Include="_Old\ArgumentSetUnitTests.cs" />
     <Compile Include="_Old\CommandArgumentsUnitTests.cs" />
